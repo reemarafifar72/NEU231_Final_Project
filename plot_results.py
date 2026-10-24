@@ -14,6 +14,16 @@ only by seed, and writes to figures/:
     4_learning_curves.png     train/validation curves for the best model of each
                               sampling type (checks convergence and overfitting)
     summary.csv               the numbers behind figure 1
+    7_control_homogeneous.png control 1: V1 mixed dendrites vs each single nonlinearity
+                              (LeakyReLU, supra-only, sub-only, Ca-only) vs model size
+    control1_homogeneous.csv  at each size, V1 mixed vs the best single nonlinearity, with
+                              a verdict ("mixed wins" / "single is enough")
+
+Runs made with `base_model.py --nonlin ...` (tagged dann_<nonlin>_*) are grouped separately
+from the LeakyReLU baseline. Figures 2-3 draw the baseline and the V1 mixed model (same
+sampling color, dashed line and square markers for V1). Figure 1 compares the baseline with
+the paper and adds a square "Yours (V1)" marker when V1 runs exist. Figure 4 has one row per
+model. Figure 7 and the control CSV compare all nonlinearities, colored by nonlinearity.
 
 
     Pass this block of code in your terminals
@@ -63,6 +73,21 @@ PAPER = {
 DATASET_NAME = {"fmnist": "Fashion-MNIST", "cifar10": "CIFAR-10"}
 SAMPLING_NAME = {"local": "dANN-LRF", "global": "dANN-GRF", "random": "dANN-R"}
 SAMPLING_ORDER = ["local", "global", "random"]
+# Dendritic nonlinearity (base_model.py --nonlin). Result files that predate the flag are 'leaky'.
+NONLIN_ORDER = ["leaky", "supra", "sub", "ca", "v1"]
+NONLIN_NAME = {"leaky": "", "supra": " supra-only", "sub": " sub-only", "ca": " Ca-only",
+               "v1": " + V1 mixed"}  # suffix on the sampling name
+SINGLE_NONLINS = ["leaky", "supra", "sub", "ca"]  # the homogeneous-type controls (control 1)
+SWEEP_NONLINS = ["leaky", "v1"]  # what the size-sweep figures (2, 3) draw
+# In the sweep figures color follows the sampling type and the nonlinearity is encoded by
+# line style and marker. In the control figure color follows the nonlinearity instead.
+NONLIN_STYLE = {"leaky": dict(ls="-", marker="o"), "v1": dict(ls=(0, (2, 1.5)), marker="s"),
+                "supra": dict(ls=":", marker="^"), "sub": dict(ls="-.", marker="v"),
+                "ca": dict(ls=(0, (6, 2)), marker="D")}
+
+
+def model_name(sampling, nonlin):
+    return SAMPLING_NAME[sampling] + NONLIN_NAME[nonlin]
 
 # Settings the paper used; runs with anything else are left out of the comparison.
 PAPER_SETTINGS = {"layers": 1, "synapses": 16, "lr": 0.001, "batch_size": 128}
@@ -79,6 +104,9 @@ GRID = "#e1e0d9"
 AXIS = "#c3c2b7"
 # Categorical slots, fixed per sampling type (color follows the entity, never its rank)
 COLOR = {"local": "#2a78d6", "global": "#eb6834", "random": "#1baf7a"}
+# Control figure: one color per nonlinearity (same channel colors as analyze_v1.py)
+NONLIN_COLOR = {"leaky": "#898781", "supra": "#eb6834", "sub": "#2a78d6", "ca": "#1baf7a",
+                "v1": "#0b0b0b"}
 TRAIN_VAL = {"train": "#2a78d6", "val": "#eb6834"}
 # Ordinal blue ramp for soma counts, light -> dark (light end still clears 2:1)
 SOMA_RAMP = ["#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281"]
@@ -136,9 +164,12 @@ def load_runs(results_dir, dataset=None):
 
 
 def config_key(r):
-    """Everything except the seed: runs with the same key are repeats of one model."""
+    """Everything except the seed: runs with the same key are repeats of one model.
+
+    Old result files predate --nonlin; they are the LeakyReLU baseline.
+    """
     return (r["dataset"], r["sampling"], r["layers"], r["dends"], r["soma"],
-            r["synapses"], r["lr"], r["batch_size"], r["epochs"])
+            r["synapses"], r["lr"], r["batch_size"], r["epochs"], r.get("nonlin", "leaky"))
 
 
 def mean_sd(values):
@@ -154,7 +185,7 @@ def group_runs(runs):
 
     configs = []
     for key, rs in groups.items():
-        dataset, sampling, layers, dends, soma, synapses, lr, bs, epochs = key
+        dataset, sampling, layers, dends, soma, synapses, lr, bs, epochs, nonlin = key
         acc_m, acc_s = mean_sd([100 * r["test_acc"] for r in rs])
         loss_m, loss_s = mean_sd([r["test_loss"] for r in rs])
         n_ep = min(len(r["train_loss"]) for r in rs)
@@ -162,7 +193,7 @@ def group_runs(runs):
                   for k in ("train_loss", "train_acc", "val_loss", "val_acc")}
         configs.append(dict(
             dataset=dataset, sampling=sampling, layers=layers, dends=dends, soma=soma,
-            synapses=synapses, lr=lr, batch_size=bs, epochs=epochs,
+            synapses=synapses, lr=lr, batch_size=bs, epochs=epochs, nonlin=nonlin,
             n_params=rs[0]["n_params"], n=len(rs), seeds=sorted(r["seed"] for r in rs),
             acc=acc_m, acc_sd=acc_s, loss=loss_m, loss_sd=loss_s, curves=curves,
         ))
@@ -174,10 +205,10 @@ def paper_comparable(c):
 
 
 def best_configs(configs):
-    """Best mean test accuracy per (dataset, sampling) - the same rule as Table 1."""
+    """Best mean test accuracy per (dataset, sampling, nonlin) - the same rule as Table 1."""
     best = {}
     for c in configs:
-        k = (c["dataset"], c["sampling"])
+        k = (c["dataset"], c["sampling"], c["nonlin"])
         if k not in best or c["acc"] > best[k]["acc"]:
             best[k] = c
     return best
@@ -252,13 +283,16 @@ def fig_paper_comparison(best, datasets, out):
     fig, axes = plt.subplots(len(datasets), 2, figsize=(11, 3.9 * len(datasets)),
                              squeeze=False)
     for row, ds in enumerate(datasets):
-        samplings = [s for s in SAMPLING_ORDER if (ds, s) in best and s in PAPER.get(ds, {})]
+        # The paper comparison is baseline (leaky) vs Table 1; V1 runs are added as a third marker.
+        samplings = [s for s in SAMPLING_ORDER
+                     if (ds, s, "leaky") in best and s in PAPER.get(ds, {})]
         x = np.arange(len(samplings))
         for col, (metric, label) in enumerate([("acc", "Test accuracy (%)"),
                                                ("loss", "Test loss (cross-entropy)")]):
             ax = axes[row, col]
+            v1_labelled = False
             for i, s in enumerate(samplings):
-                c = best[(ds, s)]
+                c = best[(ds, s, "leaky")]
                 p_mean, p_sd = PAPER[ds][s][metric]
                 y_mean, y_sd = c[metric], c[f"{metric}_sd"]
                 # Paper: hollow gray diamond. Yours: filled circle in the sampling color.
@@ -274,9 +308,20 @@ def fig_paper_comparison(best, datasets, out):
                 ax.annotate(fmt.format(p_mean), (i - 0.12, p_mean), xytext=(-9, 0),
                             textcoords="offset points", va="center", ha="right",
                             fontsize=9, color=INK_2)
+                if (ds, s, "v1") in best:  # V1 dendrites: filled square, same color
+                    v = best[(ds, s, "v1")]
+                    ax.errorbar(i + 0.36, v[metric], yerr=v[f"{metric}_sd"], fmt="s", ms=7,
+                                mfc=COLOR[s], mec=SURFACE, mew=1.5, ecolor=COLOR[s],
+                                elinewidth=1.4, capsize=3,
+                                label=None if v1_labelled else "Yours (V1 dendrites)", zorder=4)
+                    v1_labelled = True
+                    ax.annotate(fmt.format(v[metric]), (i + 0.36, v[metric]), xytext=(0, -13),
+                                textcoords="offset points", va="top", ha="center",
+                                fontsize=9, color=INK)
             ax.set_xticks(x)
-            ax.set_xticklabels([f"{SAMPLING_NAME[s]}\n{best[(ds, s)]['dends']} x "
-                                f"{best[(ds, s)]['soma']}\n{best[(ds, s)]['n']} seed(s)"
+            ax.set_xticklabels([f"{SAMPLING_NAME[s]}\n{best[(ds, s, 'leaky')]['dends']} x "
+                                f"{best[(ds, s, 'leaky')]['soma']}\n"
+                                f"{best[(ds, s, 'leaky')]['n']} seed(s)"
                                 for s in samplings], fontsize=9)
             ax.set_xlabel("Best model (dendrites per soma x somata)")
             ax.set_xlim(-0.6, len(samplings) - 0.4)
@@ -302,18 +347,22 @@ def fig_size_sweep(configs, datasets, out):
             ax = axes[row, col]
             ends = []
             for s in SAMPLING_ORDER:
-                cs = sorted((c for c in configs if c["dataset"] == ds and c["sampling"] == s),
-                            key=lambda c: c["n_params"])
-                if not cs:
-                    continue
-                px = np.array([c["n_params"] for c in cs])
-                m = np.array([c[metric] for c in cs])
-                sd = np.array([c[f"{metric}_sd"] for c in cs])
-                ax.fill_between(px, m - sd, m + sd, color=COLOR[s], alpha=0.15, lw=0)
-                ax.plot(px, m, "-o", color=COLOR[s], mec=SURFACE, mew=1.2,
-                        label=SAMPLING_NAME[s])
-                ends.append((px[-1], m[-1], SAMPLING_NAME[s]))
-                if ds in PAPER and s in PAPER[ds]:
+                any_line = False
+                for n in SWEEP_NONLINS:
+                    cs = sorted((c for c in configs if c["dataset"] == ds
+                                 and c["sampling"] == s and c["nonlin"] == n),
+                                key=lambda c: c["n_params"])
+                    if not cs:
+                        continue
+                    any_line = True
+                    px = np.array([c["n_params"] for c in cs])
+                    m = np.array([c[metric] for c in cs])
+                    sd = np.array([c[f"{metric}_sd"] for c in cs])
+                    ax.fill_between(px, m - sd, m + sd, color=COLOR[s], alpha=0.15, lw=0)
+                    ax.plot(px, m, color=COLOR[s], mec=SURFACE, mew=1.2,
+                            label=model_name(s, n), **NONLIN_STYLE[n])
+                    ends.append((px[-1], m[-1], model_name(s, n)))
+                if any_line and ds in PAPER and s in PAPER[ds]:
                     ax.axhline(PAPER[ds][s][metric][0], color=COLOR[s], lw=1, ls=(0, (4, 3)))
             ax.set_xscale("log")
             _plain_log_ticks(ax.xaxis)
@@ -338,18 +387,20 @@ def fig_dendrites_per_soma(configs, datasets, out):
     panels = []
     for ds in datasets:
         for s in SAMPLING_ORDER:
-            cs = [c for c in configs if c["dataset"] == ds and c["sampling"] == s]
-            by_soma = defaultdict(list)
-            for c in cs:
-                by_soma[c["soma"]].append(c)
-            if any(len(v) >= 2 for v in by_soma.values()):
-                panels.append((ds, s, by_soma))
+            for n in SWEEP_NONLINS:
+                cs = [c for c in configs if c["dataset"] == ds and c["sampling"] == s
+                      and c["nonlin"] == n]
+                by_soma = defaultdict(list)
+                for c in cs:
+                    by_soma[c["soma"]].append(c)
+                if any(len(v) >= 2 for v in by_soma.values()):
+                    panels.append((ds, s, n, by_soma))
     if not panels:
         print("  skipping 3_dendrites_per_soma.png: need >= 2 dendrite counts at one soma count")
         return
 
     fig, axes = plt.subplots(len(panels), 2, figsize=(10, 3.6 * len(panels)), squeeze=False)
-    for row, (ds, s, by_soma) in enumerate(panels):
+    for row, (ds, s, n, by_soma) in enumerate(panels):
         somas = sorted(by_soma)
         # spread the ordinal ramp across however many soma counts there are
         steps = np.linspace(0, len(SOMA_RAMP) - 1, len(somas)).round().astype(int)
@@ -378,7 +429,7 @@ def fig_dendrites_per_soma(configs, datasets, out):
             _end_labels(ax, ends)
             ax.set_xlabel("Dendrites per soma (log2 scale)")
             ax.set_ylabel(label)
-            ax.set_title(f"{DATASET_NAME.get(ds, ds)}, {SAMPLING_NAME[s]}: test "
+            ax.set_title(f"{DATASET_NAME.get(ds, ds)}, {model_name(s, n)}: test "
                          f"{'accuracy' if metric == 'acc' else 'loss'}")
             if col == 0:
                 ax.legend(loc="lower right")
@@ -389,7 +440,8 @@ def fig_dendrites_per_soma(configs, datasets, out):
 
 def fig_learning_curves(best, out):
     """Train vs validation curves for the best model per (dataset, sampling)."""
-    keys = [k for k in sorted(best, key=lambda k: (k[0], SAMPLING_ORDER.index(k[1])))]
+    keys = sorted(best, key=lambda k: (k[0], SAMPLING_ORDER.index(k[1]),
+                                       NONLIN_ORDER.index(k[2])))
     fig, axes = plt.subplots(len(keys), 2, figsize=(10, 3.2 * len(keys)), squeeze=False)
     for row, k in enumerate(keys):
         c = best[k]
@@ -417,7 +469,7 @@ def fig_learning_curves(best, out):
             _end_labels(ax, ends)
             ds_name = DATASET_NAME.get(k[0], k[0])
             if col == 0:
-                ax.set_title(f"{ds_name}, {SAMPLING_NAME[k[1]]}: accuracy", pad=18)
+                ax.set_title(f"{ds_name}, {model_name(k[1], k[2])}: accuracy", pad=18)
                 ax.text(0, 1.02, f"best model: {size_label(c)}, n={c['n']} seed(s)",
                         transform=ax.transAxes, fontsize=8, color=INK_2, va="bottom")
             else:
@@ -430,19 +482,130 @@ def fig_learning_curves(best, out):
 
 
 # ---------------------------------------------------------------------------
+# Control 1: homogeneous type ("any single nonlinearity is enough")
+# ---------------------------------------------------------------------------
+
+NONLIN_LABEL = {"leaky": "LeakyReLU (paper)", "supra": "supra-only", "sub": "sub-only",
+                "ca": "Ca-only", "v1": "V1 mixed"}
+
+
+def fig_control_homogeneous(configs, datasets, out):
+    """Mixed V1 dendrites vs each single nonlinearity, test metrics vs model size."""
+    panels = [(ds, s) for ds in datasets for s in SAMPLING_ORDER
+              if any(c["dataset"] == ds and c["sampling"] == s and c["nonlin"] == "v1"
+                     for c in configs)]
+    if not panels:
+        print("  skipping 7_control_homogeneous.png: no --nonlin v1 runs")
+        return
+    fig, axes = plt.subplots(len(panels), 2, figsize=(10, 3.8 * len(panels)), squeeze=False)
+    for row, (ds, s) in enumerate(panels):
+        for col, (metric, label) in enumerate([("acc", "Test accuracy (%)"),
+                                               ("loss", "Test loss")]):
+            ax = axes[row, col]
+            ends = []
+            for n in NONLIN_ORDER:
+                cs = sorted((c for c in configs if c["dataset"] == ds and c["sampling"] == s
+                             and c["nonlin"] == n), key=lambda c: c["n_params"])
+                if not cs:
+                    continue
+                px = np.array([c["n_params"] for c in cs])
+                m = np.array([c[metric] for c in cs])
+                sd = np.array([c[f"{metric}_sd"] for c in cs])
+                ax.fill_between(px, m - sd, m + sd, color=NONLIN_COLOR[n], alpha=0.12, lw=0)
+                # error bars as well: with one size per model there is no band to shade
+                ax.errorbar(px, m, yerr=sd, fmt="none", ecolor=NONLIN_COLOR[n], elinewidth=1.2,
+                            capsize=3, alpha=0.8, zorder=2)
+                ax.plot(px, m, color=NONLIN_COLOR[n], marker=NONLIN_STYLE[n]["marker"],
+                        mec=SURFACE, mew=1.2, lw=2.6 if n == "v1" else 2, label=NONLIN_LABEL[n],
+                        zorder=3)
+                ends.append((px[-1], m[-1], NONLIN_LABEL[n]))
+            if ds in PAPER and s in PAPER[ds]:
+                ax.axhline(PAPER[ds][s][metric][0], color=MUTED, lw=1, ls=(0, (4, 3)),
+                           label="Paper best (Table 1)")
+            ax.set_xscale("log")
+            _plain_log_ticks(ax.xaxis)
+            ax.margins(x=0.08)
+            _end_labels(ax, ends)
+            ax.set_xlabel("Trainable parameters (log scale)")
+            ax.set_ylabel(label)
+            ax.set_title(f"{DATASET_NAME.get(ds, ds)}, {SAMPLING_NAME[s]}: control 1, test "
+                         f"{'accuracy' if metric == 'acc' else 'loss'}")
+            if row == 0 and col == 0:
+                ax.legend(loc="lower right")
+    _finish(fig, out / "7_control_homogeneous.png",
+            "Control 1 (homogeneous type): if any single-nonlinearity line matches the black "
+            "V1 mixed line, mixing adds nothing. Single-nonlinearity models have the baseline's "
+            "parameter count; V1 mixed has three cable weights per dendrite. Error bars and "
+            "shading: SD over seeds.")
+
+
+def write_control_homogeneous(configs, out):
+    """control1_homogeneous.csv: at each exact size, V1 mixed vs the best single nonlinearity."""
+    by_size = defaultdict(dict)
+    for c in configs:
+        by_size[(c["dataset"], c["sampling"], c["dends"], c["soma"])][c["nonlin"]] = c
+    rows = []
+    for key in sorted(by_size, key=lambda k: (k[0], SAMPLING_ORDER.index(k[1]), k[3], k[2])):
+        group = by_size[key]
+        singles = [n for n in SINGLE_NONLINS if n in group]
+        if "v1" not in group or not singles:
+            continue
+        ds, s, dends, soma = key
+        v = group["v1"]
+        best_n = max(singles, key=lambda n: group[n]["acc"])
+        b = group[best_n]
+        gap = v["acc"] - b["acc"]
+        # Same rule as verdict(): two combined SDs, never tighter than 0.5 percentage points
+        tol = max(2 * math.sqrt(v["acc_sd"] ** 2 + b["acc_sd"] ** 2), 0.5)
+        row = {"dataset": ds, "model": SAMPLING_NAME[s], "size": f"{dends} dends x {soma} somata",
+               "seeds": min(c["n"] for c in group.values())}
+        for n in NONLIN_ORDER:
+            row[f"{n}_acc"] = round(group[n]["acc"], 3) if n in group else ""
+            row[f"{n}_acc_sd"] = round(group[n]["acc_sd"], 3) if n in group else ""
+        row.update(best_single=best_n, gap_pp=round(gap, 3), tolerance_pp=round(tol, 3),
+                   verdict="mixed wins" if gap > tol else "single is enough")
+        rows.append(row)
+    if not rows:
+        print("  skipping control1_homogeneous.csv: need v1 and single-nonlinearity runs "
+              "at the same size")
+        return rows
+    path = out / "control1_homogeneous.csv"
+    with path.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0]))
+        w.writeheader()
+        w.writerows(rows)
+    print(f"  wrote {path}")
+
+    print("\nControl 1 (homogeneous type): V1 mixed vs single nonlinearities, test accuracy (%)")
+    cols = "".join(f"{NONLIN_LABEL[n]:>18s}" for n in NONLIN_ORDER)
+    print(f"{'dataset':9s} {'model':9s} {'size':22s} {'seeds':>5s}{cols}  {'best single':>11s} "
+          f"{'gap':>6s}  verdict")
+    for r in rows:
+        cells = "".join(f"{r[f'{n}_acc']:7.2f} +/- {r[f'{n}_acc_sd']:5.2f}" if r[f"{n}_acc"] != ""
+                        else f"{'-':>18s}" for n in NONLIN_ORDER)
+        print(f"{r['dataset']:9s} {r['model']:9s} {r['size']:22s} {r['seeds']:>5d}{cells}  "
+              f"{r['best_single']:>11s} {r['gap_pp']:+6.2f}  {r['verdict']}")
+    if any(r["seeds"] < 3 for r in rows):
+        print("  note: fewer than 3 seeds, so the SD and the verdict are unreliable; "
+              "the tolerance floor of 0.5 pp is doing the work.")
+    return rows
+
+
+# ---------------------------------------------------------------------------
 # Summary table
 # ---------------------------------------------------------------------------
 
 def write_summary(best, n_configs, out):
     rows = []
-    for (ds, s), c in sorted(best.items(), key=lambda kv: (kv[0][0], SAMPLING_ORDER.index(kv[0][1]))):
+    order = lambda kv: (kv[0][0], SAMPLING_ORDER.index(kv[0][1]), NONLIN_ORDER.index(kv[0][2]))
+    for (ds, s, n), c in sorted(best.items(), key=order):
         if ds not in PAPER or s not in PAPER[ds]:
             continue
         p = PAPER[ds][s]
         diff, tol, v = verdict(c, p)
         rows.append({
-            "dataset": ds, "model": SAMPLING_NAME[s], "best_size": size_label(c),
-            "n_params": c["n_params"], "sizes_tried": n_configs[(ds, s)],
+            "dataset": ds, "model": model_name(s, n), "nonlin": n, "best_size": size_label(c),
+            "n_params": c["n_params"], "sizes_tried": n_configs[(ds, s, n)],
             "seeds": c["n"], "epochs": c["epochs"],
             "your_acc": round(c["acc"], 3), "your_acc_sd": round(c["acc_sd"], 3),
             "paper_acc": p["acc"][0], "paper_acc_sd": p["acc"][1],
@@ -463,12 +626,12 @@ def write_summary(best, n_configs, out):
 
 def print_summary(rows):
     print("\nBest model vs paper Table 1 (test accuracy, %)")
-    print(f"{'dataset':9s} {'model':9s} {'best size':22s} {'seeds':>5s}  "
+    print(f"{'dataset':9s} {'model':20s} {'best size':22s} {'seeds':>5s}  "
           f"{'yours':>14s}  {'paper':>14s}  {'diff':>6s}  verdict")
     for r in rows:
         yours = f"{r['your_acc']:.2f} +/- {r['your_acc_sd']:.2f}"
         paper = f"{r['paper_acc']:.2f} +/- {r['paper_acc_sd']:.2f}"
-        print(f"{r['dataset']:9s} {r['model']:9s} {r['best_size']:22s} {r['seeds']:>5d}  "
+        print(f"{r['dataset']:9s} {r['model']:20s} {r['best_size']:22s} {r['seeds']:>5d}  "
               f"{yours:>14s}  {paper:>14s}  {r['diff_pp']:+6.2f}  {r['verdict']}")
     notes = []
     if any(r["seeds"] < 5 for r in rows):
@@ -481,7 +644,7 @@ def print_summary(rows):
     if any(r["sizes_tried"] < 5 for r in rows):
         notes.append("Few model sizes tried: the paper's best came from a sweep of 1-64 "
                      "dendrites x 32-512 somata, so a narrow sweep can land slightly below it.")
-    if any(r["model"] == "dANN-GRF" for r in rows):
+    if any(r["model"].startswith("dANN-GRF") for r in rows):
         notes.append("dANN-GRF: the paper's code left dendrites beyond 9 per soma without "
                      "inputs; base_model.py does not, so GRF can differ from the paper.")
     for n in notes:
@@ -515,13 +678,15 @@ def main():
     best = best_configs(comparable)
     n_configs = defaultdict(int)
     for c in comparable:
-        n_configs[(c["dataset"], c["sampling"])] += 1
+        n_configs[(c["dataset"], c["sampling"], c["nonlin"])] += 1
 
     fig_paper_comparison(best, datasets, out)
     fig_size_sweep(comparable, datasets, out)
     fig_dendrites_per_soma(comparable, datasets, out)
     fig_learning_curves(best, out)
+    fig_control_homogeneous(comparable, datasets, out)
     print_summary(write_summary(best, n_configs, out))
+    write_control_homogeneous(comparable, out)
 
 
 if __name__ == "__main__":

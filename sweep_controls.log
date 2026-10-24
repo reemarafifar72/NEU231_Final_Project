@@ -1,0 +1,454 @@
+=== seed 1 | 16 dends x 256 somata | leaky ===
+dANN-local | leaky dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8647 acc 0.7307 | val loss 0.4822 acc 0.8308 | 6.4s
+epoch   2/25  train loss 0.4506 acc 0.8398 | val loss 0.4070 acc 0.8552 | 5.9s
+epoch   3/25  train loss 0.3992 acc 0.8579 | val loss 0.3787 acc 0.8670 | 5.9s
+epoch   4/25  train loss 0.3704 acc 0.8683 | val loss 0.3514 acc 0.8775 | 6.0s
+epoch   5/25  train loss 0.3486 acc 0.8756 | val loss 0.3376 acc 0.8815 | 5.8s
+epoch   6/25  train loss 0.3317 acc 0.8814 | val loss 0.3249 acc 0.8848 | 6.0s
+epoch   7/25  train loss 0.3190 acc 0.8852 | val loss 0.3183 acc 0.8848 | 5.8s
+epoch   8/25  train loss 0.3074 acc 0.8903 | val loss 0.3078 acc 0.8925 | 5.8s
+epoch   9/25  train loss 0.2976 acc 0.8914 | val loss 0.3057 acc 0.8915 | 5.9s
+epoch  10/25  train loss 0.2872 acc 0.8963 | val loss 0.2967 acc 0.8940 | 5.8s
+epoch  11/25  train loss 0.2813 acc 0.8986 | val loss 0.2993 acc 0.8913 | 5.8s
+epoch  12/25  train loss 0.2718 acc 0.9008 | val loss 0.2907 acc 0.8985 | 5.8s
+epoch  13/25  train loss 0.2661 acc 0.9016 | val loss 0.2797 acc 0.9002 | 5.8s
+epoch  14/25  train loss 0.2589 acc 0.9048 | val loss 0.2787 acc 0.9003 | 6.6s
+epoch  15/25  train loss 0.2528 acc 0.9080 | val loss 0.2798 acc 0.9028 | 7.2s
+epoch  16/25  train loss 0.2461 acc 0.9094 | val loss 0.2723 acc 0.9050 | 7.2s
+epoch  17/25  train loss 0.2392 acc 0.9127 | val loss 0.2677 acc 0.9080 | 7.7s
+epoch  18/25  train loss 0.2340 acc 0.9148 | val loss 0.2712 acc 0.9020 | 7.4s
+epoch  19/25  train loss 0.2309 acc 0.9151 | val loss 0.2619 acc 0.9075 | 7.3s
+epoch  20/25  train loss 0.2250 acc 0.9175 | val loss 0.2696 acc 0.9060 | 6.8s
+epoch  21/25  train loss 0.2199 acc 0.9198 | val loss 0.2603 acc 0.9068 | 7.5s
+epoch  22/25  train loss 0.2165 acc 0.9210 | val loss 0.2629 acc 0.9060 | 6.3s
+epoch  23/25  train loss 0.2118 acc 0.9222 | val loss 0.2680 acc 0.9040 | 5.9s
+epoch  24/25  train loss 0.2075 acc 0.9240 | val loss 0.2623 acc 0.9125 | 5.9s
+epoch  25/25  train loss 0.2043 acc 0.9250 | val loss 0.2552 acc 0.9127 | 5.9s
+
+Test acc: 0.8959 | Test loss: 0.2989
+Saved results/dann_local_fmnist_L1_d16_s256_seed1.json and .pt
+=== seed 1 | 16 dends x 256 somata | supra ===
+dANN-local | supra dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.9085 acc 0.7116 | val loss 0.4945 acc 0.8302 | 6.3s
+epoch   2/25  train loss 0.4602 acc 0.8416 | val loss 0.4117 acc 0.8535 | 6.0s
+epoch   3/25  train loss 0.4014 acc 0.8595 | val loss 0.3833 acc 0.8662 | 6.1s
+epoch   4/25  train loss 0.3688 acc 0.8694 | val loss 0.3546 acc 0.8740 | 6.1s
+epoch   5/25  train loss 0.3461 acc 0.8770 | val loss 0.3372 acc 0.8818 | 6.7s
+epoch   6/25  train loss 0.3282 acc 0.8823 | val loss 0.3289 acc 0.8818 | 6.0s
+epoch   7/25  train loss 0.3155 acc 0.8872 | val loss 0.3208 acc 0.8858 | 6.0s
+epoch   8/25  train loss 0.3037 acc 0.8911 | val loss 0.3134 acc 0.8880 | 6.0s
+epoch   9/25  train loss 0.2939 acc 0.8938 | val loss 0.3129 acc 0.8877 | 6.1s
+epoch  10/25  train loss 0.2834 acc 0.8975 | val loss 0.3024 acc 0.8932 | 6.2s
+epoch  11/25  train loss 0.2785 acc 0.8984 | val loss 0.3055 acc 0.8885 | 6.0s
+epoch  12/25  train loss 0.2683 acc 0.9024 | val loss 0.2942 acc 0.8950 | 7.4s
+epoch  13/25  train loss 0.2634 acc 0.9031 | val loss 0.2867 acc 0.8988 | 7.4s
+epoch  14/25  train loss 0.2560 acc 0.9051 | val loss 0.2885 acc 0.8988 | 6.5s
+epoch  15/25  train loss 0.2494 acc 0.9077 | val loss 0.2884 acc 0.8983 | 6.2s
+epoch  16/25  train loss 0.2426 acc 0.9111 | val loss 0.2818 acc 0.9000 | 6.2s
+epoch  17/25  train loss 0.2363 acc 0.9131 | val loss 0.2766 acc 0.9008 | 6.2s
+epoch  18/25  train loss 0.2308 acc 0.9154 | val loss 0.2864 acc 0.8983 | 6.4s
+epoch  19/25  train loss 0.2279 acc 0.9169 | val loss 0.2768 acc 0.9028 | 6.0s
+epoch  20/25  train loss 0.2231 acc 0.9182 | val loss 0.2795 acc 0.9045 | 6.1s
+epoch  21/25  train loss 0.2161 acc 0.9211 | val loss 0.2727 acc 0.9057 | 6.0s
+epoch  22/25  train loss 0.2131 acc 0.9225 | val loss 0.2766 acc 0.9052 | 6.0s
+epoch  23/25  train loss 0.2087 acc 0.9236 | val loss 0.2916 acc 0.8968 | 6.0s
+epoch  24/25  train loss 0.2037 acc 0.9247 | val loss 0.2755 acc 0.9033 | 6.0s
+epoch  25/25  train loss 0.1999 acc 0.9267 | val loss 0.2727 acc 0.9048 | 6.0s
+
+Test acc: 0.8911 | Test loss: 0.3141
+Saved results/dann_supra_local_fmnist_L1_d16_s256_seed1.json and .pt
+=== seed 1 | 16 dends x 256 somata | sub ===
+dANN-local | sub dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8385 acc 0.7335 | val loss 0.4863 acc 0.8277 | 6.2s
+epoch   2/25  train loss 0.4568 acc 0.8362 | val loss 0.4170 acc 0.8518 | 5.9s
+epoch   3/25  train loss 0.4099 acc 0.8526 | val loss 0.3891 acc 0.8618 | 6.0s
+epoch   4/25  train loss 0.3830 acc 0.8631 | val loss 0.3655 acc 0.8707 | 6.9s
+epoch   5/25  train loss 0.3622 acc 0.8696 | val loss 0.3503 acc 0.8743 | 6.5s
+epoch   6/25  train loss 0.3461 acc 0.8756 | val loss 0.3410 acc 0.8772 | 6.8s
+epoch   7/25  train loss 0.3338 acc 0.8790 | val loss 0.3333 acc 0.8798 | 6.8s
+epoch   8/25  train loss 0.3227 acc 0.8840 | val loss 0.3227 acc 0.8850 | 6.5s
+epoch   9/25  train loss 0.3133 acc 0.8856 | val loss 0.3186 acc 0.8887 | 6.2s
+epoch  10/25  train loss 0.3030 acc 0.8905 | val loss 0.3110 acc 0.8877 | 6.1s
+epoch  11/25  train loss 0.2979 acc 0.8918 | val loss 0.3101 acc 0.8892 | 6.2s
+epoch  12/25  train loss 0.2882 acc 0.8953 | val loss 0.3046 acc 0.8912 | 6.3s
+epoch  13/25  train loss 0.2826 acc 0.8967 | val loss 0.2956 acc 0.8980 | 7.1s
+epoch  14/25  train loss 0.2757 acc 0.8992 | val loss 0.2925 acc 0.8958 | 7.0s
+epoch  15/25  train loss 0.2688 acc 0.9027 | val loss 0.2933 acc 0.8978 | 6.5s
+epoch  16/25  train loss 0.2623 acc 0.9046 | val loss 0.2867 acc 0.8970 | 7.2s
+epoch  17/25  train loss 0.2562 acc 0.9067 | val loss 0.2794 acc 0.8992 | 7.2s
+epoch  18/25  train loss 0.2502 acc 0.9095 | val loss 0.2846 acc 0.8968 | 6.5s
+epoch  19/25  train loss 0.2480 acc 0.9101 | val loss 0.2768 acc 0.9002 | 7.5s
+epoch  20/25  train loss 0.2421 acc 0.9116 | val loss 0.2772 acc 0.9012 | 8.0s
+epoch  21/25  train loss 0.2372 acc 0.9134 | val loss 0.2732 acc 0.9027 | 6.4s
+epoch  22/25  train loss 0.2346 acc 0.9148 | val loss 0.2727 acc 0.9027 | 6.4s
+epoch  23/25  train loss 0.2301 acc 0.9169 | val loss 0.2810 acc 0.8972 | 7.3s
+epoch  24/25  train loss 0.2248 acc 0.9180 | val loss 0.2716 acc 0.9057 | 6.7s
+epoch  25/25  train loss 0.2219 acc 0.9186 | val loss 0.2677 acc 0.9023 | 6.0s
+
+Test acc: 0.8932 | Test loss: 0.3055
+Saved results/dann_sub_local_fmnist_L1_d16_s256_seed1.json and .pt
+=== seed 1 | 16 dends x 256 somata | ca ===
+dANN-local | ca dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 1.0262 acc 0.6522 | val loss 0.4832 acc 0.8282 | 6.3s
+epoch   2/25  train loss 0.4411 acc 0.8428 | val loss 0.3942 acc 0.8595 | 6.1s
+epoch   3/25  train loss 0.3806 acc 0.8642 | val loss 0.3644 acc 0.8695 | 6.0s
+epoch   4/25  train loss 0.3491 acc 0.8748 | val loss 0.3412 acc 0.8773 | 6.8s
+epoch   5/25  train loss 0.3269 acc 0.8819 | val loss 0.3256 acc 0.8858 | 6.9s
+epoch   6/25  train loss 0.3089 acc 0.8886 | val loss 0.3138 acc 0.8867 | 7.0s
+epoch   7/25  train loss 0.2961 acc 0.8935 | val loss 0.3102 acc 0.8892 | 7.3s
+epoch   8/25  train loss 0.2839 acc 0.8976 | val loss 0.3002 acc 0.8948 | 7.3s
+epoch   9/25  train loss 0.2731 acc 0.9009 | val loss 0.2975 acc 0.8967 | 7.8s
+epoch  10/25  train loss 0.2622 acc 0.9052 | val loss 0.2880 acc 0.8970 | 6.3s
+epoch  11/25  train loss 0.2563 acc 0.9068 | val loss 0.2931 acc 0.8978 | 6.1s
+epoch  12/25  train loss 0.2454 acc 0.9101 | val loss 0.2817 acc 0.8998 | 6.2s
+epoch  13/25  train loss 0.2395 acc 0.9128 | val loss 0.2767 acc 0.9042 | 6.0s
+epoch  14/25  train loss 0.2326 acc 0.9154 | val loss 0.2754 acc 0.9000 | 8.8s
+epoch  15/25  train loss 0.2253 acc 0.9177 | val loss 0.2757 acc 0.9030 | 8.5s
+epoch  16/25  train loss 0.2177 acc 0.9211 | val loss 0.2718 acc 0.9023 | 7.0s
+epoch  17/25  train loss 0.2108 acc 0.9230 | val loss 0.2639 acc 0.9038 | 7.1s
+epoch  18/25  train loss 0.2043 acc 0.9254 | val loss 0.2667 acc 0.9065 | 6.8s
+epoch  19/25  train loss 0.2001 acc 0.9277 | val loss 0.2606 acc 0.9092 | 6.9s
+epoch  20/25  train loss 0.1946 acc 0.9300 | val loss 0.2665 acc 0.9085 | 7.2s
+epoch  21/25  train loss 0.1889 acc 0.9325 | val loss 0.2617 acc 0.9085 | 6.9s
+epoch  22/25  train loss 0.1848 acc 0.9344 | val loss 0.2618 acc 0.9098 | 7.3s
+epoch  23/25  train loss 0.1799 acc 0.9352 | val loss 0.2664 acc 0.9088 | 6.1s
+epoch  24/25  train loss 0.1749 acc 0.9375 | val loss 0.2651 acc 0.9098 | 7.3s
+epoch  25/25  train loss 0.1712 acc 0.9385 | val loss 0.2610 acc 0.9113 | 7.8s
+
+Test acc: 0.8941 | Test loss: 0.3065
+Saved results/dann_ca_local_fmnist_L1_d16_s256_seed1.json and .pt
+=== seed 1 | 16 dends x 256 somata | v1 ===
+dANN-local | v1 dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 84,746 trainable params | mps
+epoch   1/25  train loss 0.8116 acc 0.7343 | val loss 0.4768 acc 0.8322 | 11.4s
+epoch   2/25  train loss 0.4448 acc 0.8415 | val loss 0.4047 acc 0.8530 | 10.7s
+epoch   3/25  train loss 0.3930 acc 0.8593 | val loss 0.3790 acc 0.8665 | 10.5s
+epoch   4/25  train loss 0.3637 acc 0.8700 | val loss 0.3502 acc 0.8740 | 10.0s
+epoch   5/25  train loss 0.3417 acc 0.8768 | val loss 0.3396 acc 0.8785 | 9.7s
+epoch   6/25  train loss 0.3240 acc 0.8825 | val loss 0.3208 acc 0.8828 | 9.6s
+epoch   7/25  train loss 0.3115 acc 0.8863 | val loss 0.3160 acc 0.8882 | 9.4s
+epoch   8/25  train loss 0.2990 acc 0.8920 | val loss 0.3068 acc 0.8878 | 9.7s
+epoch   9/25  train loss 0.2887 acc 0.8942 | val loss 0.3040 acc 0.8933 | 9.5s
+epoch  10/25  train loss 0.2781 acc 0.8986 | val loss 0.2931 acc 0.8938 | 9.5s
+epoch  11/25  train loss 0.2727 acc 0.9001 | val loss 0.3079 acc 0.8873 | 9.4s
+epoch  12/25  train loss 0.2629 acc 0.9032 | val loss 0.2906 acc 0.8982 | 9.5s
+epoch  13/25  train loss 0.2567 acc 0.9044 | val loss 0.2820 acc 0.8980 | 9.9s
+epoch  14/25  train loss 0.2496 acc 0.9075 | val loss 0.2777 acc 0.8975 | 9.8s
+epoch  15/25  train loss 0.2427 acc 0.9112 | val loss 0.2844 acc 0.9007 | 9.1s
+epoch  16/25  train loss 0.2354 acc 0.9122 | val loss 0.2797 acc 0.8935 | 10.4s
+epoch  17/25  train loss 0.2288 acc 0.9156 | val loss 0.2695 acc 0.9037 | 10.6s
+epoch  18/25  train loss 0.2231 acc 0.9176 | val loss 0.2723 acc 0.9013 | 11.4s
+epoch  19/25  train loss 0.2208 acc 0.9177 | val loss 0.2652 acc 0.9073 | 11.1s
+epoch  20/25  train loss 0.2152 acc 0.9215 | val loss 0.2681 acc 0.9067 | 12.7s
+epoch  21/25  train loss 0.2091 acc 0.9225 | val loss 0.2655 acc 0.9057 | 12.7s
+epoch  22/25  train loss 0.2063 acc 0.9250 | val loss 0.2654 acc 0.9053 | 9.9s
+epoch  23/25  train loss 0.2012 acc 0.9263 | val loss 0.2747 acc 0.9047 | 9.6s
+epoch  24/25  train loss 0.1968 acc 0.9274 | val loss 0.2629 acc 0.9095 | 9.7s
+epoch  25/25  train loss 0.1920 acc 0.9303 | val loss 0.2626 acc 0.9098 | 9.6s
+
+Test acc: 0.8972 | Test loss: 0.3073
+Saved results/dann_v1_local_fmnist_L1_d16_s256_seed1.json and .pt
+=== seed 2 | 16 dends x 256 somata | leaky ===
+dANN-local | leaky dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8645 acc 0.7261 | val loss 0.4817 acc 0.8378 | 6.7s
+epoch   2/25  train loss 0.4493 acc 0.8414 | val loss 0.4092 acc 0.8583 | 6.1s
+epoch   3/25  train loss 0.3974 acc 0.8586 | val loss 0.3768 acc 0.8712 | 7.4s
+epoch   4/25  train loss 0.3688 acc 0.8689 | val loss 0.3589 acc 0.8768 | 6.7s
+epoch   5/25  train loss 0.3478 acc 0.8760 | val loss 0.3443 acc 0.8795 | 6.2s
+epoch   6/25  train loss 0.3311 acc 0.8822 | val loss 0.3339 acc 0.8850 | 6.4s
+epoch   7/25  train loss 0.3183 acc 0.8857 | val loss 0.3232 acc 0.8865 | 6.3s
+epoch   8/25  train loss 0.3053 acc 0.8906 | val loss 0.3195 acc 0.8863 | 6.2s
+epoch   9/25  train loss 0.2948 acc 0.8946 | val loss 0.3078 acc 0.8893 | 6.1s
+epoch  10/25  train loss 0.2855 acc 0.8975 | val loss 0.3024 acc 0.8952 | 6.1s
+epoch  11/25  train loss 0.2770 acc 0.9004 | val loss 0.3026 acc 0.8895 | 6.2s
+epoch  12/25  train loss 0.2691 acc 0.9029 | val loss 0.2938 acc 0.9003 | 6.2s
+epoch  13/25  train loss 0.2613 acc 0.9068 | val loss 0.2889 acc 0.8967 | 6.3s
+epoch  14/25  train loss 0.2556 acc 0.9074 | val loss 0.2870 acc 0.8952 | 6.1s
+epoch  15/25  train loss 0.2495 acc 0.9092 | val loss 0.2830 acc 0.8990 | 6.1s
+epoch  16/25  train loss 0.2433 acc 0.9111 | val loss 0.2919 acc 0.8945 | 6.2s
+epoch  17/25  train loss 0.2384 acc 0.9135 | val loss 0.2820 acc 0.8968 | 6.2s
+epoch  18/25  train loss 0.2330 acc 0.9149 | val loss 0.2759 acc 0.9013 | 6.1s
+epoch  19/25  train loss 0.2279 acc 0.9178 | val loss 0.2720 acc 0.9033 | 6.1s
+epoch  20/25  train loss 0.2237 acc 0.9185 | val loss 0.2753 acc 0.9000 | 6.1s
+epoch  21/25  train loss 0.2194 acc 0.9199 | val loss 0.2719 acc 0.9032 | 6.1s
+epoch  22/25  train loss 0.2149 acc 0.9213 | val loss 0.2939 acc 0.8945 | 6.1s
+epoch  23/25  train loss 0.2100 acc 0.9234 | val loss 0.2655 acc 0.9023 | 6.3s
+epoch  24/25  train loss 0.2061 acc 0.9244 | val loss 0.2663 acc 0.9038 | 6.2s
+epoch  25/25  train loss 0.1999 acc 0.9274 | val loss 0.2655 acc 0.9045 | 6.2s
+
+Test acc: 0.8948 | Test loss: 0.2940
+Saved results/dann_local_fmnist_L1_d16_s256_seed2.json and .pt
+=== seed 2 | 16 dends x 256 somata | supra ===
+dANN-local | supra dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.9070 acc 0.7095 | val loss 0.4993 acc 0.8327 | 6.5s
+epoch   2/25  train loss 0.4601 acc 0.8425 | val loss 0.4145 acc 0.8563 | 6.4s
+epoch   3/25  train loss 0.3992 acc 0.8615 | val loss 0.3825 acc 0.8723 | 6.4s
+epoch   4/25  train loss 0.3670 acc 0.8699 | val loss 0.3553 acc 0.8775 | 6.5s
+epoch   5/25  train loss 0.3432 acc 0.8782 | val loss 0.3388 acc 0.8795 | 6.3s
+epoch   6/25  train loss 0.3263 acc 0.8830 | val loss 0.3314 acc 0.8838 | 6.3s
+epoch   7/25  train loss 0.3123 acc 0.8864 | val loss 0.3237 acc 0.8883 | 6.3s
+epoch   8/25  train loss 0.3000 acc 0.8913 | val loss 0.3160 acc 0.8870 | 6.5s
+epoch   9/25  train loss 0.2902 acc 0.8954 | val loss 0.3083 acc 0.8908 | 6.4s
+epoch  10/25  train loss 0.2810 acc 0.8980 | val loss 0.3052 acc 0.8937 | 6.2s
+epoch  11/25  train loss 0.2732 acc 0.9003 | val loss 0.3043 acc 0.8923 | 6.3s
+epoch  12/25  train loss 0.2643 acc 0.9038 | val loss 0.2971 acc 0.8947 | 6.2s
+epoch  13/25  train loss 0.2573 acc 0.9064 | val loss 0.2931 acc 0.8965 | 6.3s
+epoch  14/25  train loss 0.2519 acc 0.9075 | val loss 0.2937 acc 0.8957 | 6.2s
+epoch  15/25  train loss 0.2451 acc 0.9094 | val loss 0.2914 acc 0.8980 | 6.2s
+epoch  16/25  train loss 0.2383 acc 0.9128 | val loss 0.3043 acc 0.8942 | 6.2s
+epoch  17/25  train loss 0.2350 acc 0.9136 | val loss 0.2929 acc 0.8933 | 6.4s
+epoch  18/25  train loss 0.2287 acc 0.9166 | val loss 0.2852 acc 0.9000 | 6.7s
+epoch  19/25  train loss 0.2240 acc 0.9185 | val loss 0.2874 acc 0.8993 | 6.5s
+epoch  20/25  train loss 0.2192 acc 0.9191 | val loss 0.2881 acc 0.8992 | 7.0s
+epoch  21/25  train loss 0.2156 acc 0.9210 | val loss 0.2870 acc 0.8988 | 7.3s
+epoch  22/25  train loss 0.2113 acc 0.9224 | val loss 0.3035 acc 0.8910 | 8.4s
+epoch  23/25  train loss 0.2065 acc 0.9247 | val loss 0.2833 acc 0.9015 | 8.4s
+epoch  24/25  train loss 0.2025 acc 0.9257 | val loss 0.2816 acc 0.9038 | 7.2s
+epoch  25/25  train loss 0.1957 acc 0.9289 | val loss 0.2827 acc 0.9007 | 10.0s
+
+Test acc: 0.8925 | Test loss: 0.3127
+Saved results/dann_supra_local_fmnist_L1_d16_s256_seed2.json and .pt
+=== seed 2 | 16 dends x 256 somata | sub ===
+dANN-local | sub dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8361 acc 0.7332 | val loss 0.4846 acc 0.8322 | 7.5s
+epoch   2/25  train loss 0.4549 acc 0.8367 | val loss 0.4174 acc 0.8522 | 8.3s
+epoch   3/25  train loss 0.4071 acc 0.8541 | val loss 0.3872 acc 0.8665 | 7.6s
+epoch   4/25  train loss 0.3800 acc 0.8641 | val loss 0.3707 acc 0.8692 | 7.0s
+epoch   5/25  train loss 0.3598 acc 0.8706 | val loss 0.3544 acc 0.8770 | 6.7s
+epoch   6/25  train loss 0.3436 acc 0.8767 | val loss 0.3457 acc 0.8807 | 6.9s
+epoch   7/25  train loss 0.3312 acc 0.8807 | val loss 0.3360 acc 0.8825 | 6.8s
+epoch   8/25  train loss 0.3184 acc 0.8857 | val loss 0.3310 acc 0.8825 | 8.0s
+epoch   9/25  train loss 0.3082 acc 0.8896 | val loss 0.3245 acc 0.8853 | 7.2s
+epoch  10/25  train loss 0.2993 acc 0.8926 | val loss 0.3163 acc 0.8867 | 7.8s
+epoch  11/25  train loss 0.2914 acc 0.8941 | val loss 0.3172 acc 0.8843 | 7.9s
+epoch  12/25  train loss 0.2836 acc 0.8981 | val loss 0.3080 acc 0.8888 | 6.7s
+epoch  13/25  train loss 0.2767 acc 0.9010 | val loss 0.3006 acc 0.8940 | 6.8s
+epoch  14/25  train loss 0.2712 acc 0.9017 | val loss 0.2972 acc 0.8920 | 6.6s
+epoch  15/25  train loss 0.2653 acc 0.9024 | val loss 0.2983 acc 0.8913 | 6.3s
+epoch  16/25  train loss 0.2591 acc 0.9055 | val loss 0.3130 acc 0.8853 | 6.4s
+epoch  17/25  train loss 0.2546 acc 0.9069 | val loss 0.2942 acc 0.8907 | 9.7s
+epoch  18/25  train loss 0.2502 acc 0.9089 | val loss 0.2914 acc 0.8923 | 12.5s
+epoch  19/25  train loss 0.2452 acc 0.9104 | val loss 0.2884 acc 0.8948 | 9.4s
+epoch  20/25  train loss 0.2406 acc 0.9123 | val loss 0.2885 acc 0.8935 | 10.2s
+epoch  21/25  train loss 0.2372 acc 0.9130 | val loss 0.2839 acc 0.8965 | 8.7s
+epoch  22/25  train loss 0.2327 acc 0.9147 | val loss 0.2954 acc 0.8912 | 8.6s
+epoch  23/25  train loss 0.2279 acc 0.9170 | val loss 0.2782 acc 0.8975 | 8.0s
+epoch  24/25  train loss 0.2237 acc 0.9184 | val loss 0.2790 acc 0.8952 | 7.5s
+epoch  25/25  train loss 0.2177 acc 0.9209 | val loss 0.2792 acc 0.8965 | 8.2s
+
+Test acc: 0.8899 | Test loss: 0.3063
+Saved results/dann_sub_local_fmnist_L1_d16_s256_seed2.json and .pt
+=== seed 2 | 16 dends x 256 somata | ca ===
+dANN-local | ca dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 1.0270 acc 0.6423 | val loss 0.4877 acc 0.8357 | 7.2s
+epoch   2/25  train loss 0.4427 acc 0.8426 | val loss 0.4010 acc 0.8605 | 6.6s
+epoch   3/25  train loss 0.3806 acc 0.8635 | val loss 0.3657 acc 0.8698 | 6.6s
+epoch   4/25  train loss 0.3485 acc 0.8759 | val loss 0.3450 acc 0.8760 | 6.4s
+epoch   5/25  train loss 0.3265 acc 0.8830 | val loss 0.3310 acc 0.8838 | 6.7s
+epoch   6/25  train loss 0.3087 acc 0.8899 | val loss 0.3205 acc 0.8865 | 6.6s
+epoch   7/25  train loss 0.2955 acc 0.8929 | val loss 0.3111 acc 0.8903 | 6.6s
+epoch   8/25  train loss 0.2820 acc 0.8986 | val loss 0.3050 acc 0.8928 | 7.0s
+epoch   9/25  train loss 0.2711 acc 0.9029 | val loss 0.2993 acc 0.8957 | 6.6s
+epoch  10/25  train loss 0.2618 acc 0.9051 | val loss 0.2948 acc 0.8960 | 6.4s
+epoch  11/25  train loss 0.2524 acc 0.9092 | val loss 0.2952 acc 0.8950 | 7.0s
+epoch  12/25  train loss 0.2441 acc 0.9124 | val loss 0.2876 acc 0.9003 | 6.9s
+epoch  13/25  train loss 0.2361 acc 0.9156 | val loss 0.2842 acc 0.9003 | 6.4s
+epoch  14/25  train loss 0.2295 acc 0.9177 | val loss 0.2850 acc 0.8980 | 7.0s
+epoch  15/25  train loss 0.2222 acc 0.9197 | val loss 0.2852 acc 0.8988 | 6.7s
+epoch  16/25  train loss 0.2145 acc 0.9233 | val loss 0.2973 acc 0.8932 | 6.4s
+epoch  17/25  train loss 0.2107 acc 0.9236 | val loss 0.2913 acc 0.8968 | 6.6s
+epoch  18/25  train loss 0.2045 acc 0.9271 | val loss 0.2799 acc 0.8995 | 9.5s
+epoch  19/25  train loss 0.1978 acc 0.9292 | val loss 0.2772 acc 0.9035 | 7.4s
+epoch  20/25  train loss 0.1932 acc 0.9305 | val loss 0.2808 acc 0.9028 | 6.6s
+epoch  21/25  train loss 0.1873 acc 0.9335 | val loss 0.2760 acc 0.9030 | 6.8s
+epoch  22/25  train loss 0.1828 acc 0.9348 | val loss 0.2972 acc 0.8943 | 6.7s
+epoch  23/25  train loss 0.1779 acc 0.9370 | val loss 0.2719 acc 0.9050 | 6.7s
+epoch  24/25  train loss 0.1732 acc 0.9380 | val loss 0.2783 acc 0.9025 | 6.7s
+epoch  25/25  train loss 0.1665 acc 0.9418 | val loss 0.2744 acc 0.9042 | 6.5s
+
+Test acc: 0.8926 | Test loss: 0.3000
+Saved results/dann_ca_local_fmnist_L1_d16_s256_seed2.json and .pt
+=== seed 2 | 16 dends x 256 somata | v1 ===
+dANN-local | v1 dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 84,746 trainable params | mps
+epoch   1/25  train loss 0.8076 acc 0.7397 | val loss 0.4769 acc 0.8362 | 9.6s
+epoch   2/25  train loss 0.4516 acc 0.8387 | val loss 0.4080 acc 0.8562 | 9.2s
+epoch   3/25  train loss 0.4001 acc 0.8567 | val loss 0.3782 acc 0.8682 | 9.1s
+epoch   4/25  train loss 0.3704 acc 0.8671 | val loss 0.3566 acc 0.8748 | 9.5s
+epoch   5/25  train loss 0.3463 acc 0.8758 | val loss 0.3438 acc 0.8748 | 10.0s
+epoch   6/25  train loss 0.3293 acc 0.8811 | val loss 0.3308 acc 0.8810 | 9.3s
+epoch   7/25  train loss 0.3137 acc 0.8857 | val loss 0.3218 acc 0.8840 | 9.2s
+epoch   8/25  train loss 0.3006 acc 0.8919 | val loss 0.3170 acc 0.8865 | 9.5s
+epoch   9/25  train loss 0.2902 acc 0.8961 | val loss 0.3098 acc 0.8903 | 9.2s
+epoch  10/25  train loss 0.2802 acc 0.8985 | val loss 0.3079 acc 0.8883 | 9.2s
+epoch  11/25  train loss 0.2716 acc 0.9012 | val loss 0.3047 acc 0.8878 | 9.2s
+epoch  12/25  train loss 0.2632 acc 0.9040 | val loss 0.2975 acc 0.8917 | 9.2s
+epoch  13/25  train loss 0.2560 acc 0.9071 | val loss 0.2876 acc 0.8965 | 9.2s
+epoch  14/25  train loss 0.2496 acc 0.9091 | val loss 0.2944 acc 0.8928 | 9.1s
+epoch  15/25  train loss 0.2428 acc 0.9099 | val loss 0.2887 acc 0.8935 | 9.3s
+epoch  16/25  train loss 0.2353 acc 0.9144 | val loss 0.2986 acc 0.8903 | 9.2s
+epoch  17/25  train loss 0.2316 acc 0.9152 | val loss 0.2947 acc 0.8923 | 9.4s
+epoch  18/25  train loss 0.2266 acc 0.9176 | val loss 0.2821 acc 0.8965 | 10.4s
+epoch  19/25  train loss 0.2197 acc 0.9193 | val loss 0.2792 acc 0.8968 | 9.1s
+epoch  20/25  train loss 0.2153 acc 0.9211 | val loss 0.2862 acc 0.8983 | 9.1s
+epoch  21/25  train loss 0.2112 acc 0.9226 | val loss 0.2828 acc 0.9010 | 9.2s
+epoch  22/25  train loss 0.2060 acc 0.9249 | val loss 0.3072 acc 0.8895 | 9.1s
+epoch  23/25  train loss 0.2018 acc 0.9268 | val loss 0.2747 acc 0.9003 | 9.2s
+epoch  24/25  train loss 0.1962 acc 0.9278 | val loss 0.2824 acc 0.8988 | 9.3s
+epoch  25/25  train loss 0.1901 acc 0.9316 | val loss 0.2815 acc 0.9005 | 9.2s
+
+Test acc: 0.8920 | Test loss: 0.3083
+Saved results/dann_v1_local_fmnist_L1_d16_s256_seed2.json and .pt
+=== seed 3 | 16 dends x 256 somata | leaky ===
+dANN-local | leaky dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8624 acc 0.7222 | val loss 0.4759 acc 0.8310 | 6.2s
+epoch   2/25  train loss 0.4472 acc 0.8411 | val loss 0.4055 acc 0.8583 | 5.9s
+epoch   3/25  train loss 0.3986 acc 0.8576 | val loss 0.3736 acc 0.8647 | 6.0s
+epoch   4/25  train loss 0.3706 acc 0.8684 | val loss 0.3533 acc 0.8738 | 6.1s
+epoch   5/25  train loss 0.3490 acc 0.8748 | val loss 0.3357 acc 0.8795 | 6.0s
+epoch   6/25  train loss 0.3332 acc 0.8802 | val loss 0.3238 acc 0.8848 | 6.0s
+epoch   7/25  train loss 0.3209 acc 0.8842 | val loss 0.3202 acc 0.8842 | 6.0s
+epoch   8/25  train loss 0.3084 acc 0.8883 | val loss 0.3082 acc 0.8878 | 6.1s
+epoch   9/25  train loss 0.2987 acc 0.8918 | val loss 0.3112 acc 0.8855 | 5.9s
+epoch  10/25  train loss 0.2907 acc 0.8939 | val loss 0.2981 acc 0.8933 | 6.0s
+epoch  11/25  train loss 0.2814 acc 0.8979 | val loss 0.3033 acc 0.8905 | 6.0s
+epoch  12/25  train loss 0.2735 acc 0.9003 | val loss 0.2943 acc 0.8952 | 5.9s
+epoch  13/25  train loss 0.2671 acc 0.9024 | val loss 0.2892 acc 0.8953 | 5.9s
+epoch  14/25  train loss 0.2596 acc 0.9053 | val loss 0.3033 acc 0.8858 | 5.9s
+epoch  15/25  train loss 0.2551 acc 0.9065 | val loss 0.2793 acc 0.8992 | 6.0s
+epoch  16/25  train loss 0.2477 acc 0.9098 | val loss 0.2814 acc 0.8988 | 6.0s
+epoch  17/25  train loss 0.2429 acc 0.9113 | val loss 0.2731 acc 0.9018 | 6.1s
+epoch  18/25  train loss 0.2372 acc 0.9131 | val loss 0.2675 acc 0.9060 | 6.0s
+epoch  19/25  train loss 0.2315 acc 0.9154 | val loss 0.2809 acc 0.8973 | 6.6s
+epoch  20/25  train loss 0.2282 acc 0.9161 | val loss 0.2832 acc 0.9003 | 6.3s
+epoch  21/25  train loss 0.2215 acc 0.9197 | val loss 0.2672 acc 0.9045 | 6.3s
+epoch  22/25  train loss 0.2188 acc 0.9198 | val loss 0.2670 acc 0.9038 | 6.1s
+epoch  23/25  train loss 0.2134 acc 0.9214 | val loss 0.2745 acc 0.9010 | 6.2s
+epoch  24/25  train loss 0.2092 acc 0.9227 | val loss 0.2608 acc 0.9060 | 6.1s
+epoch  25/25  train loss 0.2029 acc 0.9261 | val loss 0.2840 acc 0.8978 | 6.3s
+
+Test acc: 0.8832 | Test loss: 0.3159
+Saved results/dann_local_fmnist_L1_d16_s256_seed3.json and .pt
+=== seed 3 | 16 dends x 256 somata | supra ===
+dANN-local | supra dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.9070 acc 0.7080 | val loss 0.4879 acc 0.8330 | 6.4s
+epoch   2/25  train loss 0.4589 acc 0.8429 | val loss 0.4168 acc 0.8582 | 6.1s
+epoch   3/25  train loss 0.4021 acc 0.8603 | val loss 0.3803 acc 0.8638 | 6.2s
+epoch   4/25  train loss 0.3682 acc 0.8698 | val loss 0.3529 acc 0.8745 | 6.0s
+epoch   5/25  train loss 0.3427 acc 0.8775 | val loss 0.3347 acc 0.8823 | 6.1s
+epoch   6/25  train loss 0.3248 acc 0.8826 | val loss 0.3250 acc 0.8845 | 7.0s
+epoch   7/25  train loss 0.3107 acc 0.8882 | val loss 0.3192 acc 0.8827 | 8.0s
+epoch   8/25  train loss 0.2977 acc 0.8933 | val loss 0.3085 acc 0.8853 | 7.2s
+epoch   9/25  train loss 0.2875 acc 0.8950 | val loss 0.3096 acc 0.8877 | 7.4s
+epoch  10/25  train loss 0.2795 acc 0.8993 | val loss 0.2945 acc 0.8932 | 6.0s
+epoch  11/25  train loss 0.2696 acc 0.9023 | val loss 0.3007 acc 0.8888 | 5.9s
+epoch  12/25  train loss 0.2620 acc 0.9047 | val loss 0.2958 acc 0.8925 | 5.9s
+epoch  13/25  train loss 0.2554 acc 0.9071 | val loss 0.2849 acc 0.8948 | 5.9s
+epoch  14/25  train loss 0.2488 acc 0.9091 | val loss 0.2999 acc 0.8862 | 5.9s
+epoch  15/25  train loss 0.2440 acc 0.9109 | val loss 0.2783 acc 0.9010 | 5.8s
+epoch  16/25  train loss 0.2369 acc 0.9141 | val loss 0.2836 acc 0.8935 | 5.8s
+epoch  17/25  train loss 0.2327 acc 0.9153 | val loss 0.2754 acc 0.9013 | 5.8s
+epoch  18/25  train loss 0.2280 acc 0.9170 | val loss 0.2692 acc 0.9027 | 5.8s
+epoch  19/25  train loss 0.2218 acc 0.9183 | val loss 0.2805 acc 0.8987 | 5.8s
+epoch  20/25  train loss 0.2186 acc 0.9189 | val loss 0.2832 acc 0.8958 | 5.9s
+epoch  21/25  train loss 0.2132 acc 0.9214 | val loss 0.2709 acc 0.9012 | 5.8s
+epoch  22/25  train loss 0.2096 acc 0.9237 | val loss 0.2691 acc 0.9017 | 5.8s
+epoch  23/25  train loss 0.2051 acc 0.9249 | val loss 0.2787 acc 0.8973 | 5.8s
+epoch  24/25  train loss 0.2002 acc 0.9267 | val loss 0.2658 acc 0.9038 | 5.7s
+epoch  25/25  train loss 0.1946 acc 0.9284 | val loss 0.2863 acc 0.8945 | 5.7s
+
+Test acc: 0.8851 | Test loss: 0.3264
+Saved results/dann_supra_local_fmnist_L1_d16_s256_seed3.json and .pt
+=== seed 3 | 16 dends x 256 somata | sub ===
+dANN-local | sub dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 0.8332 acc 0.7307 | val loss 0.4793 acc 0.8288 | 6.0s
+epoch   2/25  train loss 0.4525 acc 0.8381 | val loss 0.4148 acc 0.8542 | 6.0s
+epoch   3/25  train loss 0.4084 acc 0.8536 | val loss 0.3865 acc 0.8608 | 6.1s
+epoch   4/25  train loss 0.3827 acc 0.8634 | val loss 0.3688 acc 0.8700 | 5.8s
+epoch   5/25  train loss 0.3624 acc 0.8698 | val loss 0.3498 acc 0.8793 | 5.8s
+epoch   6/25  train loss 0.3470 acc 0.8760 | val loss 0.3385 acc 0.8812 | 5.9s
+epoch   7/25  train loss 0.3346 acc 0.8788 | val loss 0.3366 acc 0.8822 | 5.8s
+epoch   8/25  train loss 0.3219 acc 0.8839 | val loss 0.3252 acc 0.8832 | 5.7s
+epoch   9/25  train loss 0.3124 acc 0.8875 | val loss 0.3244 acc 0.8798 | 5.7s
+epoch  10/25  train loss 0.3035 acc 0.8901 | val loss 0.3125 acc 0.8895 | 5.8s
+epoch  11/25  train loss 0.2933 acc 0.8938 | val loss 0.3173 acc 0.8882 | 5.8s
+epoch  12/25  train loss 0.2860 acc 0.8957 | val loss 0.3044 acc 0.8895 | 5.9s
+epoch  13/25  train loss 0.2797 acc 0.8986 | val loss 0.3013 acc 0.8890 | 6.8s
+epoch  14/25  train loss 0.2723 acc 0.9003 | val loss 0.3144 acc 0.8820 | 10.0s
+epoch  15/25  train loss 0.2669 acc 0.9034 | val loss 0.2951 acc 0.8925 | 9.4s
+epoch  16/25  train loss 0.2605 acc 0.9054 | val loss 0.2940 acc 0.8927 | 6.7s
+epoch  17/25  train loss 0.2557 acc 0.9060 | val loss 0.2866 acc 0.8952 | 6.0s
+epoch  18/25  train loss 0.2507 acc 0.9088 | val loss 0.2846 acc 0.8988 | 6.2s
+epoch  19/25  train loss 0.2449 acc 0.9107 | val loss 0.2909 acc 0.8935 | 6.3s
+epoch  20/25  train loss 0.2416 acc 0.9102 | val loss 0.2917 acc 0.8940 | 6.2s
+epoch  21/25  train loss 0.2355 acc 0.9139 | val loss 0.2798 acc 0.8997 | 6.2s
+epoch  22/25  train loss 0.2327 acc 0.9151 | val loss 0.2778 acc 0.8988 | 6.2s
+epoch  23/25  train loss 0.2278 acc 0.9171 | val loss 0.2857 acc 0.8982 | 6.2s
+epoch  24/25  train loss 0.2245 acc 0.9165 | val loss 0.2780 acc 0.8993 | 6.2s
+epoch  25/25  train loss 0.2184 acc 0.9209 | val loss 0.3024 acc 0.8860 | 6.2s
+
+Test acc: 0.8758 | Test loss: 0.3358
+Saved results/dann_sub_local_fmnist_L1_d16_s256_seed3.json and .pt
+=== seed 3 | 16 dends x 256 somata | ca ===
+dANN-local | ca dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 76,554 trainable params | mps
+epoch   1/25  train loss 1.0297 acc 0.6486 | val loss 0.4824 acc 0.8302 | 6.2s
+epoch   2/25  train loss 0.4404 acc 0.8435 | val loss 0.3925 acc 0.8578 | 6.2s
+epoch   3/25  train loss 0.3810 acc 0.8628 | val loss 0.3602 acc 0.8677 | 6.1s
+epoch   4/25  train loss 0.3496 acc 0.8746 | val loss 0.3397 acc 0.8805 | 6.5s
+epoch   5/25  train loss 0.3269 acc 0.8822 | val loss 0.3206 acc 0.8865 | 6.1s
+epoch   6/25  train loss 0.3100 acc 0.8878 | val loss 0.3108 acc 0.8882 | 6.2s
+epoch   7/25  train loss 0.2961 acc 0.8931 | val loss 0.3051 acc 0.8893 | 6.1s
+epoch   8/25  train loss 0.2824 acc 0.8975 | val loss 0.2950 acc 0.8917 | 6.2s
+epoch   9/25  train loss 0.2720 acc 0.9007 | val loss 0.2941 acc 0.8922 | 6.3s
+epoch  10/25  train loss 0.2634 acc 0.9042 | val loss 0.2846 acc 0.8948 | 6.2s
+epoch  11/25  train loss 0.2532 acc 0.9085 | val loss 0.2901 acc 0.8960 | 6.2s
+epoch  12/25  train loss 0.2458 acc 0.9103 | val loss 0.2781 acc 0.9007 | 6.1s
+epoch  13/25  train loss 0.2381 acc 0.9134 | val loss 0.2780 acc 0.9020 | 6.2s
+epoch  14/25  train loss 0.2304 acc 0.9169 | val loss 0.2875 acc 0.8965 | 6.2s
+epoch  15/25  train loss 0.2245 acc 0.9197 | val loss 0.2737 acc 0.9025 | 6.1s
+epoch  16/25  train loss 0.2175 acc 0.9218 | val loss 0.2726 acc 0.9020 | 6.2s
+epoch  17/25  train loss 0.2116 acc 0.9244 | val loss 0.2647 acc 0.9070 | 6.1s
+epoch  18/25  train loss 0.2065 acc 0.9258 | val loss 0.2631 acc 0.9065 | 7.0s
+epoch  19/25  train loss 0.2002 acc 0.9279 | val loss 0.2706 acc 0.9038 | 6.7s
+epoch  20/25  train loss 0.1961 acc 0.9288 | val loss 0.2742 acc 0.9017 | 6.2s
+epoch  21/25  train loss 0.1891 acc 0.9328 | val loss 0.2601 acc 0.9070 | 6.2s
+epoch  22/25  train loss 0.1852 acc 0.9345 | val loss 0.2629 acc 0.9062 | 6.1s
+epoch  23/25  train loss 0.1807 acc 0.9354 | val loss 0.2758 acc 0.9045 | 6.2s
+epoch  24/25  train loss 0.1765 acc 0.9362 | val loss 0.2601 acc 0.9072 | 6.4s
+epoch  25/25  train loss 0.1707 acc 0.9396 | val loss 0.2850 acc 0.8977 | 6.4s
+
+Test acc: 0.8831 | Test loss: 0.3272
+Saved results/dann_ca_local_fmnist_L1_d16_s256_seed3.json and .pt
+=== seed 3 | 16 dends x 256 somata | v1 ===
+dANN-local | v1 dendrites | fmnist | 1 layer(s) | 16 dends x 256 somata | 84,746 trainable params | mps
+epoch   1/25  train loss 0.8083 acc 0.7391 | val loss 0.4697 acc 0.8397 | 9.6s
+epoch   2/25  train loss 0.4480 acc 0.8422 | val loss 0.4105 acc 0.8543 | 9.8s
+epoch   3/25  train loss 0.3981 acc 0.8592 | val loss 0.3751 acc 0.8653 | 9.9s
+epoch   4/25  train loss 0.3702 acc 0.8674 | val loss 0.3565 acc 0.8745 | 9.8s
+epoch   5/25  train loss 0.3483 acc 0.8748 | val loss 0.3357 acc 0.8812 | 11.0s
+epoch   6/25  train loss 0.3321 acc 0.8810 | val loss 0.3238 acc 0.8868 | 11.4s
+epoch   7/25  train loss 0.3188 acc 0.8847 | val loss 0.3191 acc 0.8867 | 10.5s
+epoch   8/25  train loss 0.3059 acc 0.8892 | val loss 0.3127 acc 0.8875 | 9.8s
+epoch   9/25  train loss 0.2958 acc 0.8924 | val loss 0.3083 acc 0.8882 | 11.8s
+epoch  10/25  train loss 0.2870 acc 0.8948 | val loss 0.2991 acc 0.8937 | 10.9s
+epoch  11/25  train loss 0.2764 acc 0.8998 | val loss 0.3035 acc 0.8902 | 10.5s
+epoch  12/25  train loss 0.2686 acc 0.9022 | val loss 0.2947 acc 0.8935 | 11.5s
+epoch  13/25  train loss 0.2607 acc 0.9054 | val loss 0.2907 acc 0.8960 | 9.4s
+epoch  14/25  train loss 0.2536 acc 0.9074 | val loss 0.3027 acc 0.8882 | 9.2s
+epoch  15/25  train loss 0.2483 acc 0.9091 | val loss 0.2803 acc 0.8982 | 9.4s
+epoch  16/25  train loss 0.2402 acc 0.9122 | val loss 0.2842 acc 0.8957 | 11.2s
+epoch  17/25  train loss 0.2360 acc 0.9141 | val loss 0.2716 acc 0.9025 | 9.9s
+epoch  18/25  train loss 0.2305 acc 0.9159 | val loss 0.2685 acc 0.9038 | 10.1s
+epoch  19/25  train loss 0.2238 acc 0.9175 | val loss 0.2799 acc 0.9012 | 9.2s
+epoch  20/25  train loss 0.2204 acc 0.9178 | val loss 0.2808 acc 0.9007 | 9.0s
+epoch  21/25  train loss 0.2131 acc 0.9213 | val loss 0.2709 acc 0.9070 | 9.0s
+epoch  22/25  train loss 0.2104 acc 0.9228 | val loss 0.2646 acc 0.9050 | 9.0s
+epoch  23/25  train loss 0.2045 acc 0.9247 | val loss 0.2848 acc 0.8982 | 9.1s
+epoch  24/25  train loss 0.1998 acc 0.9268 | val loss 0.2691 acc 0.9037 | 9.0s
+epoch  25/25  train loss 0.1943 acc 0.9283 | val loss 0.2885 acc 0.8973 | 9.0s
+
+Test acc: 0.8830 | Test loss: 0.3283
+Saved results/dann_v1_local_fmnist_L1_d16_s256_seed3.json and .pt
+
+Done. Next:
+  .venv/bin/python plot_results.py --results results
+  .venv/bin/python analyze_v1.py results/dann_v1_local_fmnist_L1_d16_s256_seed3 --data-dir data
