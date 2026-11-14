@@ -13,9 +13,13 @@ python base_model.py --dataset fmnist --dends 16 --soma 128 --sampling local
 **In short:** the replication matches the paper, and biologically inspired dendritic
 nonlinearities do not meaningfully improve on its LeakyReLU dendrite. The one variant that
 wins is a steep saturating dendrite, by about one point at the paper's model size; the gain
-disappears at a larger size and is not specific to calcium spikes. Where the nonlinearity
-does matter is robustness: on corrupted Fashion-MNIST images the dendrite type changes
-accuracy by up to 10 points, in different directions for noise and for occlusion.
+disappears at a larger size and is not specific to calcium spikes. The nonlinearity matters
+more for robustness: steep saturating dendrites are less tolerant of pixel noise on both
+datasets, and supralinear ones more tolerant. The change that helps most is in the wiring,
+not the nonlinearity: letting each soma's apical dendrites read a low-resolution, wide-field
+copy of the image raises CIFAR-10 accuracy by about one point at equal parameter count and
+makes the model more noise-tolerant on both datasets. It works with the plain additive soma;
+the multiplicative Ca gate does not benefit from it.
 
 All numbers are test accuracy (%) for dANN-LRF, mean +/- SD over seeds, at 16 dendrites x 256
 somata unless stated. "Paired" differences compare runs with the same seed (same data split
@@ -28,7 +32,9 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
 | Ca-only, threshold 0 | 58.22 +/- 0.91 | 5 | +0.90 +/- 0.59, p = 0.03, 4 of 5 seeds |
 | Matched tanh (`sub`, saturation 0.2) | 58.55 +/- 0.39 | 3 | +1.12 +/- 1.09 |
 | V1 mixed, threshold 0 | 58.57 +/- 0.50 | 3 | +1.14 +/- 1.33 |
+| LeakyReLU, coarse apical input (`--apical-input coarse`) | 58.51 +/- 0.70 | 3 | +1.08 +/- 0.30, p = 0.03, 3 of 3 seeds |
 | Ca gate | 57.56 +/- 0.64 | 3 | +0.13 +/- 0.32 |
+| Ca gate, coarse apical input | 57.31 +/- 0.99 | 3 | -0.12 +/- 0.39 |
 | supra-only, tuned (p 1.5, leak 0.1) | 56.72 +/- 0.31 | 3 | -0.71 +/- 1.12 |
 | Ca-only, default threshold 1.0 | 55.50 +/- 0.23 | 3 | -1.92 +/- 1.11 |
 | Per-dendrite mix 12:3:1 (biological), threshold 0.3 | 56.84 +/- 1.08 | 3 | -0.59 +/- 0.42 |
@@ -59,9 +65,12 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
 9. **Trained Ca dendrites are selective.** On CIFAR-10, 78% of outputs sit near 0 or 1 and 85%
    of dendrites switch between images. On Fashion-MNIST they are more graded (45% near 0 or 1).
 
-10. **Dendrite type matters for robustness, and it cuts both ways** (Fashion-MNIST, models
-    trained on clean images, paired difference from the baseline over 3 seeds;
-    `figures/control1/13_robustness.png`):
+10. **Dendrite type matters for robustness, and it cuts both ways.** Models trained on clean
+    images, tested on corrupted ones; paired difference from the baseline in pp (3 seeds; 5 for
+    Ca-only on CIFAR-10). Figures: `13_robustness.png` in `figures/control1/` and
+    `figures/cifar10/`.
+
+    Fashion-MNIST:
 
     | Model | Noise SD 0.2 | Noise SD 0.3 | 25% occluded | 40% occluded |
     |---|---|---|---|---|
@@ -72,23 +81,57 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     | Ca gate | -3.0 | -3.4 | -1.5 | -1.5 |
     | Ca gate, coarse apical input | +2.4 | +1.7 | +0.5 | +1.2 |
 
-    Supralinear dendrites are much more tolerant of pixel noise (3 of 3 seeds, p = 0.01 at
-    SD 0.2). Steep saturating dendrites are much less tolerant of noise but more tolerant of
-    occlusion (3 of 3 seeds, p = 0.01 or below), and the matched tanh behaves the same way,
-    again showing the two are one function. Not yet run on CIFAR-10.
-11. **No data-efficiency advantage.** Trained on 1,000, 5,000 or 20,000 Fashion-MNIST images,
-    Ca-only and the matched tanh keep the same small edge over the baseline (+0.2 to +0.5 pp,
-    3 of 3 seeds at every size); it does not grow as data shrinks (`14_data_efficiency.png`).
-12. **Giving the apical dendrites context does not rescue the gate** (Fashion-MNIST, 3 seeds,
-    `15_apical_context.png`). Additive soma: 89.13 with local and 89.08 with coarse apical
-    input. Ca gate: 89.43 and 89.24. The interaction (does the gate gain more from context?)
-    is -0.14 +/- 0.22 pp. Coarse context does give a small noise-robustness benefit to either
-    soma type (table above). In the gate ablation, shuffling the gate across images costs the
-    local-input gate 2.6 to 4.5 pp but the coarse-input gate only 0.7 to 1.4 pp, so the network
-    relies on the gate less when it carries context. That ablation also shows the gate is not
-    purely a gain switch on Fashion-MNIST: its values are image-specific even though they are
-    uncorrelated with basal drive. Fashion-MNIST is near these models' ceiling; CIFAR-10 is
-    not yet run.
+    CIFAR-10:
+
+    | Model | Noise SD 0.2 | Noise SD 0.3 | 25% occluded | 40% occluded |
+    |---|---|---|---|---|
+    | supra-only | +0.4 | +1.2 | +0.1 | +0.5 |
+    | Ca-only, threshold 0 | -2.3 | -4.2 | +0.3 | -0.4 |
+    | Matched tanh | -1.0 | -1.8 | -0.4 | -1.9 |
+    | V1 mixed, threshold 0 | -1.0 | -2.4 | +1.2 | +0.5 |
+    | Additive soma, coarse apical input | +2.0 | +2.7 | +0.2 | -0.7 |
+    | Ca gate | -0.3 | -0.5 | +0.2 | -0.4 |
+    | Ca gate, coarse apical input | -0.4 | -0.2 | -0.5 | -0.9 |
+
+    What holds on both datasets: steep saturating dendrites (Ca-only and the matched tanh,
+    which again behave as one function) lose accuracy under pixel noise (0 of 5 and 0 of 3
+    seeds above the baseline at SD 0.2 and above on CIFAR-10), and supralinear dendrites gain
+    under strong noise (3 of 3 seeds at SD 0.3 on both), though the size of both effects is far
+    smaller on CIFAR-10. What does not hold: the occlusion advantage of steep saturating
+    dendrites on Fashion-MNIST is absent on CIFAR-10. So Ca-only's one-point gain on clean
+    CIFAR-10 images turns into a loss once noise reaches SD 0.2.
+11. **No data-efficiency advantage.** Trained on 1,000, 5,000 or 20,000 images, the steep
+    saturating dendrites keep roughly the edge they have on the full training set and it does
+    not grow as data shrinks (`14_data_efficiency.png`). Fashion-MNIST: +0.2 to +0.5 pp, 3 of
+    3 seeds at every size. CIFAR-10: matched tanh +0.93, +0.58, +0.89 (3 of 3 seeds at each
+    size) against +1.12 on all 45,000; Ca-only +1.07, -0.07, +0.62 against +0.90.
+12. **Coarse apical context helps the additive soma, not the gate** (3 seeds,
+    `15_apical_context.png`, `apical_context.csv`).
+
+    | | Fashion-MNIST, local | Fashion-MNIST, coarse | CIFAR-10, local | CIFAR-10, coarse |
+    |---|---|---|---|---|
+    | Additive soma (LeakyReLU) | 89.13 | 89.08 | 57.43 | 58.51 |
+    | Ca gate | 89.43 | 89.24 | 57.56 | 57.31 |
+
+    (CIFAR-10 local additive is the baseline on the same three seeds; it is 57.32 over five.)
+    On CIFAR-10 the paper's model with coarse apical input beats the paper's model by
+    +1.08 +/- 0.30 pp (p = 0.03, 3 of 3 seeds) with the same number of parameters, and the
+    margin grows under noise: +1.2 at SD 0.1, +2.0 at 0.2, +2.7 at 0.3, +2.9 at 0.5, 3 of 3
+    seeds at every level. The same noise benefit appears on Fashion-MNIST, where clean accuracy
+    is at ceiling and unchanged. It does not help with occlusion. The gate gets nothing from
+    context: its context effect is -0.25 +/- 0.40 on CIFAR-10, and the interaction (does the
+    gate gain more from context than the additive soma?) is -1.33 +/- 0.70 (0 of 3 seeds,
+    p = 0.08) on CIFAR-10 and -0.14 +/- 0.22 on Fashion-MNIST. So the benefit comes from giving
+    the cell a second, wide-field view of the input, summed linearly at the soma; multiplying
+    by a Ca plateau throws it away. Note that this is a change of input wiring, close to a
+    two-scale input, rather than a dendritic nonlinearity, and that it rests on 3 seeds at one
+    model size.
+
+    Gate ablation (Fashion-MNIST only; not obtained for CIFAR-10): shuffling the gate across
+    images costs the local-input gate 2.6 to 4.5 pp but the coarse-input gate only 0.7 to
+    1.4 pp, so the network relies on the gate less when it carries context. It also shows the
+    gate is not purely a gain switch on Fashion-MNIST: its values are image-specific even
+    though they are uncorrelated with basal drive.
 
 Caveats: most comparisons use 3 seeds, the p-values are uncorrected for the number of models
 compared, and the biological variants were tuned while the baseline was tuned only for weight
