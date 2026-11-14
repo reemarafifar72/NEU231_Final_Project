@@ -16,12 +16,18 @@ model, so differences between models are not noise in the corruption. Level 0 re
 each run's saved test accuracy. Models are compared with the LeakyReLU baseline trained with
 the same seed (same data split and wiring).
 
+Each run's numbers are saved to <results>/robustness_<dataset>.cache as it finishes, so an
+interrupted call can simply be run again and only new runs are evaluated. On a CPU allow up to
+a minute per CIFAR-10 run (9 forward passes over the test set); a CUDA GPU is used if present.
+
 Writes robustness.csv (one row per run and level), robustness_paired.csv (each model minus
 the baseline at each level) and 13_robustness.png.
 """
 import argparse
 import csv
+import json
 import math
+import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -61,13 +67,39 @@ def perturb(x, kind, level, img_shape, channels, seed=0):
     return img.view(len(x), -1)
 
 
+CACHE_VERSION = 1  # bump if perturb() or the levels' meaning changes
+
+
+def _cache_key(kind, level):
+    return f"{kind}:{level:g}"
+
+
+def _load_cache(path):
+    try:
+        cache = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return cache if cache.get("version") == CACHE_VERSION else {}
+
+
+def _save_cache(path, cache):
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(dict(cache, version=CACHE_VERSION)))
+    tmp.replace(path)
+
+
 @torch.no_grad()
 def evaluate_runs(results, dataset, size, data_dir):
-    """[{variant, seed, kind, level, acc}] for every usable run, plus the tags skipped."""
+    """[{variant, seed, kind, level, acc}] for every usable run, plus the tags skipped.
+
+    Each run's accuracies are saved to <results>/robustness_<dataset>.cache as soon as it is
+    evaluated, so an interrupted call loses nothing and a later call only evaluates new runs.
+    """
     dends, soma = size
     img_shape, channels = IMG[dataset]
-    records, skipped, test = [], [], None
-    corrupted = {}
+    cache_path = Path(results) / f"robustness_{dataset}.cache"
+    cache = _load_cache(cache_path)
+    todo, skipped = [], []
     for path in sorted(Path(results).glob("*.json")):
         runs = load_runs_one(path, dataset)
         if not runs:
@@ -75,27 +107,54 @@ def evaluate_runs(results, dataset, size, data_dir):
         r = runs[0]
         if (r["dends"], r["soma"]) != (dends, soma) or not paper_comparable(r):
             continue
-        if not path.with_suffix(".pt").exists():
+        if path.stem not in cache and not path.with_suffix(".pt").exists():
             skipped.append(path.stem)
             continue
-        model, _ = load(path, require_bank=False)
-        if test is None:  # the test set does not depend on the seed
-            data, *_ = load_data(dataset, data_dir, seed=r["seed"])
-            test = (torch.as_tensor(data["test"][0]), torch.as_tensor(data["test"][1]))
-        for kind, levels, _ in PERTURBATIONS:
-            for level in levels:
+        todo.append((path, r))
+    needed = [(kind, level) for kind, levels, _ in PERTURBATIONS for level in levels]
+    new = [p.stem for p, _ in todo
+           if any(_cache_key(k, lv) not in cache.get(p.stem, {}) for k, lv in needed)]
+    print(f"  {len(todo)} runs, {len(todo) - len(new)} already evaluated (cached), {len(new)} to "
+          f"evaluate" + ("; on a CPU allow up to a minute per run" if new and dataset == "cifar10"
+                           and not torch.cuda.is_available() else ""))
+
+    dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    records, test, corrupted, done, t0 = [], None, {}, 0, time.time()
+    for path, r in todo:
+        accs = cache.setdefault(path.stem, {})
+        if path.stem in new:
+            model = load(path, require_bank=False)[0].to(dev)
+            if test is None:  # the test set does not depend on the seed
+                data, *_ = load_data(dataset, data_dir, seed=r["seed"])
+                test = (torch.as_tensor(data["test"][0]), torch.as_tensor(data["test"][1]).to(dev))
+            clean = None
+            for kind, level in needed:
+                if _cache_key(kind, level) in accs:
+                    continue
+                if level == 0 and clean is not None:  # level 0 is the clean test set for both
+                    accs[_cache_key(kind, level)] = clean
+                    continue
                 if (kind, level) not in corrupted:
-                    corrupted[(kind, level)] = perturb(test[0], kind, level, img_shape, channels)
+                    # generated on the CPU so the corruption is the same on every device
+                    corrupted[(kind, level)] = perturb(test[0], kind, level, img_shape,
+                                                       channels).to(dev)
                 _, acc = evaluate(model, corrupted[(kind, level)], test[1], 2000)
-                records.append(dict(variant=variant_of(r), seed=r["seed"], kind=kind,
-                                    level=level, acc=100 * acc, saved=100 * r["test_acc"]))
-        print(f"  evaluated {path.stem}")
+                accs[_cache_key(kind, level)] = 100 * acc
+                if level == 0:
+                    clean = 100 * acc
+            _save_cache(cache_path, cache)
+            done += 1
+            left = (time.time() - t0) / done * (len(new) - done)
+            print(f"  evaluated {path.stem}  ({done}/{len(new)}, about {left / 60:.0f} min left)",
+                  flush=True)
+        for kind, level in needed:
+            records.append(dict(variant=variant_of(r), seed=r["seed"], kind=kind, level=level,
+                                acc=accs[_cache_key(kind, level)], saved=100 * r["test_acc"]))
     return records, skipped
 
 
 def load_runs_one(path, dataset):
     """load_runs for a single file (same validity checks), with defaults for old files."""
-    import json
     try:
         r = json.loads(path.read_text())
     except (json.JSONDecodeError, OSError):
