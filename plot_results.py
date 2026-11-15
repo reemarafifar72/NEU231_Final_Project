@@ -1214,6 +1214,9 @@ CONTEXT_CELLS = (("leaky", "additive soma, apical sees local patches (paper)"),
                  ("leaky@apcoarse", "additive soma, apical sees coarse context"),
                  ("gate", "Ca gate, apical sees local patches"),
                  ("gate@apcoarse", "Ca gate, apical sees coarse context"))
+# Steep saturating dendrites combined with coarse apical input: do the two gains add?
+STACK_TYPES = (("ca@thr0", "Ca-only (threshold 0)"), ("sub@sat0.2", "matched tanh"))
+STACK_KEYS = {k for v, _ in STACK_TYPES for k in (v, v + "_apcoarse")}
 
 
 def write_apical_context(configs, datasets, out):
@@ -1224,13 +1227,14 @@ def write_apical_context(configs, datasets, out):
     """
     groups = defaultdict(dict)
     for c in configs:
-        if c["dataset"] in datasets and c["nonlin"] in dict(CONTEXT_CELLS):
+        if c["dataset"] in datasets and (c["nonlin"] in dict(CONTEXT_CELLS) or c["nonlin"] in STACK_KEYS):
             groups[(c["dataset"], c["sampling"], c["dends"], c["soma"])][c["nonlin"]] = c
     groups = {k: g for k, g in groups.items() if any(has_context(c) for c in g.values())}
     if not groups:
         print("  skipping apical_context.csv: no --apical-input coarse runs")
         return []
     rows = []
+    stacked = set()
     keys = sorted(groups, key=lambda k: (k[0], SAMPLING_ORDER.index(k[1]), k[2] * k[3]))
     fig, axes = plt.subplots(1, len(keys), figsize=(5.2 * len(keys), 3.9), squeeze=False)
     for ax, key in zip(axes[0], keys):
@@ -1267,22 +1271,53 @@ def write_apical_context(configs, datasets, out):
                                  diff_sd=round(st["sd"], 3),
                                  p=round(st["p"], 4) if math.isfinite(st["p"]) else "",
                                  wins=f"{st['wins']}/{st['n']}"))
-        for soma_type, color, name in (("leaky", NONLIN_COLOR["leaky"], "additive soma"),
-                                       ("gate", NONLIN_COLOR["gate"], "Ca gate")):
-            cells = [(i, g[v]) for i, v in enumerate((soma_type, soma_type + "@apcoarse")) if v in g]
+        lines = [("leaky", "leaky@apcoarse", NONLIN_COLOR["leaky"], "additive soma", "leaky", -0.07),
+                 ("gate", "gate@apcoarse", NONLIN_COLOR["gate"], "Ca gate", "gate", 0.07)]
+        for j, (v, label) in enumerate(STACK_TYPES):
+            both = v + "_apcoarse"
+            if both not in g:
+                continue
+            stacked.add(key)
+            base = v.split("@")[0]
+            lines.append((v, both, NONLIN_COLOR[base], f"{label} dendrites", base, 0.14 + 0.07 * j))
+            for k, where_txt in ((v, "local patches"), (both, "coarse context")):
+                if k in g:
+                    rows.append(dict(where, row=f"{label} dendrites, apical sees {where_txt}",
+                                     seeds=g[k]["n"], acc=round(g[k]["acc"], 3),
+                                     acc_sd=round(g[k]["acc_sd"], 3), diff="", diff_sd="", p="", wins=""))
+            contrast(f"context effect, {label} dendrites", both, v)
+            contrast(f"{label} effect, coarse apical input", both, "leaky@apcoarse")
+            contrast(f"{label} + coarse context vs the paper's model", both, "leaky")
+            if all(k in g for k in (v, both, "leaky", "leaky@apcoarse")):
+                seeds = set.intersection(*(set(g[k]["acc_by_seed"])
+                                           for k in (v, both, "leaky", "leaky@apcoarse")))
+                a = {k: g[both]["acc_by_seed"][k] - g[v]["acc_by_seed"][k] for k in seeds}
+                b = {k: g["leaky@apcoarse"]["acc_by_seed"][k] - g["leaky"]["acc_by_seed"][k] for k in seeds}
+                st = paired_stats(a, b)
+                if st:
+                    rows.append(dict(where, row=f"interaction: {label} x context (0 = the gains add)",
+                                     seeds=st["n"], acc="", acc_sd="", diff=round(st["mean"], 3),
+                                     diff_sd=round(st["sd"], 3),
+                                     p=round(st["p"], 4) if math.isfinite(st["p"]) else "",
+                                     wins=f"{st['wins']}/{st['n']}"))
+        for local, coarse, color, name, style, dx in lines:
+            cells = [(i, g[v]) for i, v in enumerate((local, coarse)) if v in g]
             if not cells:
                 continue
             ax.errorbar([i for i, _ in cells], [c["acc"] for _, c in cells],
                         yerr=[c["acc_sd"] for _, c in cells], color=color, mec=SURFACE, mew=1.2,
-                        capsize=4, elinewidth=1.3, label=name, **NONLIN_STYLE[soma_type])
+                        capsize=4, elinewidth=1.3, label=name, **NONLIN_STYLE[style])
             for i, c in cells:
-                ax.plot(np.full(c["n"], i + (0.07 if soma_type == "gate" else -0.07)),
+                ax.plot(np.full(c["n"], i + dx),
                         list(c["acc_by_seed"].values()), ".", ms=5, color=color, alpha=0.55)
         ax.set_xticks([0, 1])
         ax.set_xticklabels(["local patches\n(same as basal)", "coarse context\n(pooled image)"])
         ax.set_xlim(-0.5, 1.5)
         ax.grid(axis="x", visible=False)
         ax.margins(y=0.2)
+        if key in stacked:  # four lines: leave room for the legend above the data
+            lo, hi = ax.get_ylim()
+            ax.set_ylim(lo, hi + 0.35 * (hi - lo))
         ax.set_xlabel("What the apical dendrites see")
         ax.set_ylabel("Test accuracy (%)")
         ax.set_title(f"{DATASET_NAME.get(ds, ds)}, {dends} x {soma}")
@@ -1290,7 +1325,9 @@ def write_apical_context(configs, datasets, out):
     _finish(fig, out / "15_apical_context.png",
             "Mean and SD over seeds (dots: individual seeds). Parallel lines mean context helps "
             "any soma equally; the gate line rising more steeply would mean the multiplicative "
-            "gate makes specific use of context.")
+            "gate makes specific use of context."
+            + (" Ca-only and matched tanh lines: steep saturating dendrites with an additive soma; "
+               "parallel to the additive line means the two gains add." if stacked else ""))
     path = out / "apical_context.csv"
     with path.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))

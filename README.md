@@ -19,7 +19,9 @@ datasets, and supralinear ones more tolerant. The change that helps most is in t
 not the nonlinearity: letting each soma's apical dendrites read a low-resolution, wide-field
 copy of the image raises CIFAR-10 accuracy by about one point at equal parameter count and
 makes the model more noise-tolerant on both datasets. It works with the plain additive soma;
-the multiplicative Ca gate does not benefit from it.
+the multiplicative Ca gate does not benefit from it. The two one-point gains add: steep
+saturating dendrites with coarse apical input reach 59.4 to 59.7% on CIFAR-10, about two
+points above the paper's model with the same number of parameters (3 seeds, one model size).
 
 All numbers are test accuracy (%) for dANN-LRF, mean +/- SD over seeds, at 16 dendrites x 256
 somata unless stated. "Paired" differences compare runs with the same seed (same data split
@@ -32,7 +34,9 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
 | Ca-only, threshold 0 | 58.22 +/- 0.91 | 5 | +0.90 +/- 0.59, p = 0.03, 4 of 5 seeds |
 | Matched tanh (`sub`, saturation 0.2) | 58.55 +/- 0.39 | 3 | +1.12 +/- 1.09 |
 | V1 mixed, threshold 0 | 58.57 +/- 0.50 | 3 | +1.14 +/- 1.33 |
-| LeakyReLU, coarse apical input (`--apical-input coarse`) | 58.51 +/- 0.70 | 3 | +1.08 +/- 0.30, p = 0.03, 3 of 3 seeds |
+| LeakyReLU, coarse apical input (`--apical-input coarse`) | 58.22 +/- 0.93 | 5 | +0.90 +/- 0.37, p = 0.006, 5 of 5 seeds |
+| Matched tanh + coarse apical input | 59.68 +/- 0.87 | 3 | +2.25 +/- 0.37, p = 0.009, 3 of 3 seeds |
+| Ca-only, threshold 0 + coarse apical input | 59.39 +/- 0.46 | 3 | +1.97 +/- 0.89, p = 0.06, 3 of 3 seeds |
 | Ca gate | 57.56 +/- 0.64 | 3 | +0.13 +/- 0.32 |
 | Ca gate, coarse apical input | 57.31 +/- 0.99 | 3 | -0.12 +/- 0.39 |
 | supra-only, tuned (p 1.5, leak 0.1) | 56.72 +/- 0.31 | 3 | -0.71 +/- 1.12 |
@@ -89,7 +93,9 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     | Ca-only, threshold 0 | -2.3 | -4.2 | +0.3 | -0.4 |
     | Matched tanh | -1.0 | -1.8 | -0.4 | -1.9 |
     | V1 mixed, threshold 0 | -1.0 | -2.4 | +1.2 | +0.5 |
-    | Additive soma, coarse apical input | +2.0 | +2.7 | +0.2 | -0.7 |
+    | Additive soma, coarse apical input (5 seeds) | +2.1 | +2.7 | +0.1 | -0.4 |
+    | Matched tanh + coarse apical input | +1.7 | +1.8 | +0.1 | -1.2 |
+    | Ca-only, threshold 0 + coarse apical input | -0.2 | -0.7 | +0.8 | -0.3 |
     | Ca gate | -0.3 | -0.5 | +0.2 | -0.4 |
     | Ca gate, coarse apical input | -0.4 | -0.2 | -0.5 | -0.9 |
 
@@ -105,18 +111,17 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     not grow as data shrinks (`14_data_efficiency.png`). Fashion-MNIST: +0.2 to +0.5 pp, 3 of
     3 seeds at every size. CIFAR-10: matched tanh +0.93, +0.58, +0.89 (3 of 3 seeds at each
     size) against +1.12 on all 45,000; Ca-only +1.07, -0.07, +0.62 against +0.90.
-12. **Coarse apical context helps the additive soma, not the gate** (3 seeds,
-    `15_apical_context.png`, `apical_context.csv`).
+12. **Coarse apical context helps the additive soma, not the gate** (3 seeds; 5 for the
+    additive soma on CIFAR-10; `15_apical_context.png`, `apical_context.csv`).
 
     | | Fashion-MNIST, local | Fashion-MNIST, coarse | CIFAR-10, local | CIFAR-10, coarse |
     |---|---|---|---|---|
-    | Additive soma (LeakyReLU) | 89.13 | 89.08 | 57.43 | 58.51 |
+    | Additive soma (LeakyReLU) | 89.13 | 89.08 | 57.32 | 58.22 |
     | Ca gate | 89.43 | 89.24 | 57.56 | 57.31 |
 
-    (CIFAR-10 local additive is the baseline on the same three seeds; it is 57.32 over five.)
     On CIFAR-10 the paper's model with coarse apical input beats the paper's model by
-    +1.08 +/- 0.30 pp (p = 0.03, 3 of 3 seeds) with the same number of parameters, and the
-    margin grows under noise: +1.2 at SD 0.1, +2.0 at 0.2, +2.7 at 0.3, +2.9 at 0.5, 3 of 3
+    +0.90 +/- 0.37 pp (p = 0.006, 5 of 5 seeds) with the same number of parameters, and the
+    margin grows under noise: +1.2 at SD 0.1, +2.1 at 0.2, +2.7 at 0.3 and at 0.5, 5 of 5
     seeds at every level. The same noise benefit appears on Fashion-MNIST, where clean accuracy
     is at ceiling and unchanged. It does not help with occlusion. The gate gets nothing from
     context: its context effect is -0.25 +/- 0.40 on CIFAR-10, and the interaction (does the
@@ -124,14 +129,33 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     p = 0.08) on CIFAR-10 and -0.14 +/- 0.22 on Fashion-MNIST. So the benefit comes from giving
     the cell a second, wide-field view of the input, summed linearly at the soma; multiplying
     by a Ca plateau throws it away. Note that this is a change of input wiring, close to a
-    two-scale input, rather than a dendritic nonlinearity, and that it rests on 3 seeds at one
-    model size.
+    two-scale input, rather than a dendritic nonlinearity, and that it was tested at one model
+    size.
 
     Gate ablation (Fashion-MNIST only; not obtained for CIFAR-10): shuffling the gate across
     images costs the local-input gate 2.6 to 4.5 pp but the coarse-input gate only 0.7 to
     1.4 pp, so the network relies on the gate less when it carries context. It also shows the
     gate is not purely a gain switch on Fashion-MNIST: its values are image-specific even
     though they are uncorrelated with basal drive.
+
+13. **The two gains add** (CIFAR-10, 3 seeds, same figure and table). Steep saturating
+    dendrites combined with coarse apical input:
+
+    | Dendrite | Local apical input | Coarse apical input | Both changes vs the paper's model |
+    |---|---|---|---|
+    | LeakyReLU (paper) | 57.32 | 58.22 | +0.90 +/- 0.37 (5 of 5 seeds) |
+    | Ca-only, threshold 0 | 58.22 | 59.39 | +1.97 +/- 0.89 (p = 0.06, 3 of 3) |
+    | Matched tanh | 58.55 | 59.68 | +2.25 +/- 0.37 (p = 0.009, 3 of 3) |
+
+    The interaction between dendrite type and context is near zero (-0.37 +/- 0.65 for
+    Ca-only, +0.05 +/- 1.17 for the matched tanh), so each change contributes its own point.
+    Coarse context also offsets the noise fragility of steep dendrites (finding 10): the
+    matched tanh with coarse input is +1.7 to +2.5 pp above the baseline at every noise level
+    (3 of 3 seeds), and Ca-only with coarse input is level with the baseline under noise where
+    Ca-only alone is 2 to 4 pp below it. This is the best model in the project: 59.68 +/- 0.87
+    against 57.32 +/- 0.85 with identical parameter count. It is 3 seeds at 16 x 256 only; the
+    steep-dendrite gain vanished at 32 x 256 (finding 5), and the combination has not been
+    tested there or on Fashion-MNIST.
 
 Caveats: most comparisons use 3 seeds, the p-values are uncorrected for the number of models
 compared, and the biological variants were tuned while the baseline was tuned only for weight

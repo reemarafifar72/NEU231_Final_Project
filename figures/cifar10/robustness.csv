@@ -349,6 +349,36 @@ cifar10,Ca-only [thr0.5],ca@thr0.5,1,occlusion,0.0,57.82
 cifar10,Ca-only [thr0.5],ca@thr0.5,1,occlusion,0.1,54.04
 cifar10,Ca-only [thr0.5],ca@thr0.5,1,occlusion,0.25,44.17
 cifar10,Ca-only [thr0.5],ca@thr0.5,1,occlusion,0.4,34.78
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.0,59.91
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.05,58.52
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.1,55.95
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.2,47.29
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.3,37.87
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,noise,0.5,25.27
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,occlusion,0.0,59.91
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,occlusion,0.1,56.34
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,occlusion,0.25,44.93
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,1,occlusion,0.4,35.64
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.0,59.25
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.05,58.09
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.1,55.52
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.2,47.71
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.3,38.92
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,noise,0.5,26.89
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,occlusion,0.0,59.25
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,occlusion,0.1,55.05
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,occlusion,0.25,44.98
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,2,occlusion,0.4,34.88
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.0,59.02
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.05,58.54
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.1,56.65
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.2,49.41
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.3,41.24
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,noise,0.5,27.73
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,occlusion,0.0,59.02
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,occlusion,0.1,53.83
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,occlusion,0.25,43.25
+cifar10,Ca-only [thr0_apcoarse],ca@thr0_apcoarse,3,occlusion,0.4,33.89
 cifar10,Ca-only [thr0_gain1],ca@thr0_gain1,1,noise,0.0,54.91
 cifar10,Ca-only [thr0_gain1],ca@thr0_gain1,1,noise,0.05,54.28
 cifar10,Ca-only [thr0_gain1],ca@thr0_gain1,1,noise,0.1,53.45
@@ -669,6 +699,26 @@ cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.0,57.71
 cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.1,53.26
 cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.25,42.69
 cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.4,32.99
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.0,56.82
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.05,56.19
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.1,53.89
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.2,47.43
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.3,39.53
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,noise,0.5,27.21
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,occlusion,0.0,56.82
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,occlusion,0.1,52.74
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,occlusion,0.25,41.87
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,4,occlusion,0.4,31.42
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.0,58.74
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.05,58.01
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.1,55.83
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.2,48.99
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.3,41.17
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,noise,0.5,28.02
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,occlusion,0.0,58.74
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,occlusion,0.1,54.77
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,occlusion,0.25,46.61
+cifar10,LeakyReLU (paper) [apcoarse],leaky@apcoarse,5,occlusion,0.4,37.1
 cifar10,LeakyReLU (paper),leaky,1,noise,0.0,57.52
 cifar10,LeakyReLU (paper),leaky,1,noise,0.05,56.79
 cifar10,LeakyReLU (paper),leaky,1,noise,0.1,54.82
@@ -819,6 +869,36 @@ cifar10,sub-only [sat0.1],sub@sat0.1,3,occlusion,0.0,57.57
 cifar10,sub-only [sat0.1],sub@sat0.1,3,occlusion,0.1,52.79
 cifar10,sub-only [sat0.1],sub@sat0.1,3,occlusion,0.25,43.03
 cifar10,sub-only [sat0.1],sub@sat0.1,3,occlusion,0.4,32.66
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.0,60.15
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.05,59.33
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.1,57.32
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.2,50.38
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.3,42.16
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,noise,0.5,29.69
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,occlusion,0.0,60.15
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,occlusion,0.1,55.32
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,occlusion,0.25,43.81
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,1,occlusion,0.4,33.95
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.0,60.21
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.05,59.44
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.1,57.11
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.2,49.63
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.3,41.19
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,noise,0.5,28.69
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,occlusion,0.0,60.21
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,occlusion,0.1,55.25
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,occlusion,0.25,44.54
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,2,occlusion,0.4,34.3
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.0,58.67
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.05,58.05
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.1,56.64
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.2,50.17
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.3,42.22
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,noise,0.5,30.13
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,occlusion,0.0,58.67
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,occlusion,0.1,53.53
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,occlusion,0.25,42.78
+cifar10,sub-only [sat0.2_apcoarse],sub@sat0.2_apcoarse,3,occlusion,0.4,33.57
 cifar10,sub-only [sat0.2],sub@sat0.2,1,noise,0.0,58.98
 cifar10,sub-only [sat0.2],sub@sat0.2,1,noise,0.05,58.23
 cifar10,sub-only [sat0.2],sub@sat0.2,1,noise,0.1,55.74
