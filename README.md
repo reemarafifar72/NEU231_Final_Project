@@ -306,7 +306,20 @@ multiplicative gate (`gate`), each with local or coarse apical input. Coarse con
 both equally would mean the benefit is the extra view; the gate idea is supported only if
 gate + context beats additive + context. `plot_results.py` writes `apical_context.csv` with
 the four cells, the paired contrasts and their interaction, and `15_apical_context.png`.
-These runs are kept out of the comparisons with the paper. For gate runs `analyze_v1.py` now
+These runs are kept out of the comparisons with the paper.
+
+Because the flag is independent of the dendrite type, the same table also tests whether the
+two gains add: Ca-only threshold 0 and the matched tanh, each with coarse apical input
+(notebook cell 5f D), next to the same dendrites with local input and to the LeakyReLU models.
+
+    python base_model.py --dataset cifar10 --nonlin sub --sub-sat 0.2 --apical-input coarse
+
+`apical_context.csv` then also holds, per dendrite type, the context effect, the dendrite
+effect under coarse input, the combination against the paper's model, and the interaction
+(dendrite type x context; zero means the gains add). The same lines are drawn in
+`15_apical_context.png`.
+
+For gate runs `analyze_v1.py` now
 also reports a gate ablation: test accuracy with the gate shuffled across images (same values,
 wrong images), fixed at each soma's mean, and closed. Intact minus shuffled is the
 image-specific information the gate carries.
