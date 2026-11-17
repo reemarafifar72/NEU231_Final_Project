@@ -1,0 +1,7 @@
+dataset,model,size,base,variant,seeds,val_matched,val_acc,val_acc_sd,test_acc,test_acc_sd,selected,grid_line
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only,sat0.2,3,90.65,90.65,0.95,89.613,0.813,yes,sub|--sub-sat 0.2
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only,(defaults),3,89.494,89.494,0.828,88.63,0.924,,sub|
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only,thr0,3,90.578,90.578,0.665,89.697,0.804,yes,ca|--ca-thresh 0
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only,(defaults),3,90.439,90.439,0.684,88.993,0.597,,ca|
+fmnist,dANN-LRF,16 dends x 256 somata,V1 mixed,thr0,3,90.65,90.65,0.635,89.24,0.346,yes,v1|--ca-thresh 0
+fmnist,dANN-LRF,16 dends x 256 somata,V1 mixed,(defaults),3,90.256,90.256,0.65,89.073,0.718,,v1|

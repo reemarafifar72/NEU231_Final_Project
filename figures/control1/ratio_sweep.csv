@@ -1,4 +1,4 @@
 dataset,model,size,mix,seeds,acc,acc_sd,loss,best_single,best_single_acc,gap_vs_best_single_pp,v1_acc,gap_vs_v1_pp,tolerance_pp,verdict
-fmnist,dANN-LRF,16 dends x 256 somata,12:3:1,3,89.097,0.541,0.3086,leaky,89.13,-0.033,89.073,0.023,1.775,no advantage
-fmnist,dANN-LRF,16 dends x 256 somata,1:1:1,3,89.25,0.286,0.3071,leaky,89.13,0.12,89.073,0.177,1.519,no advantage
-fmnist,dANN-LRF,16 dends x 256 somata,1:3:12,3,89.37,0.242,0.3062,leaky,89.13,0.24,89.073,0.297,1.488,no advantage
+fmnist,dANN-LRF,16 dends x 256 somata,12:3:1,3,89.097,0.541,0.3086,ca,89.697,-0.6,89.24,-0.143,1.939,no advantage
+fmnist,dANN-LRF,16 dends x 256 somata,1:1:1,3,89.25,0.286,0.3071,ca,89.697,-0.447,89.24,0.01,1.707,no advantage
+fmnist,dANN-LRF,16 dends x 256 somata,1:3:12,3,89.37,0.242,0.3062,ca,89.697,-0.327,89.24,0.13,1.68,no advantage

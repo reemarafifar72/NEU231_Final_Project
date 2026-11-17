@@ -9,6 +9,8 @@
 #   MIXES="12:3:1 2:1:1" NONLINS=branch bash sweep_controls.sh  # other ratios
 #   SEEDS="1 2 3 4 5" SIZES="16x256 64x256" bash sweep_controls.sh
 #   NONLINS="ca" EXTRA="--ca-thresh 0.3" bash sweep_controls.sh # one model, extra flags
+#   NONLINS=gate bash sweep_controls.sh                         # apical Ca gate model
+#   (constants grids: see sweep_constants.sh)
 #   EXTRA="--epochs 1 --device cpu" OUT=/tmp/dry bash sweep_controls.sh   # quick dry run
 #   caffeinate -i bash sweep_controls.sh                        # keep a Mac awake
 #   DATASET=cifar10 bash sweep_controls.sh                      # CIFAR-10 (see colab_cifar10.ipynb)
@@ -18,6 +20,7 @@
 #                                        figures/8_ratio_sweep.png, ratio_sweep.csv
 #   python analyze_v1.py results/dann_v1_local_fmnist_L1_d16_s256_seed1 --data-dir data
 set -u
+export PYTHONUNBUFFERED=1   # show each epoch line as it happens, even through tee
 SEEDS=${SEEDS:-"1 2 3"}
 SIZES=${SIZES:-"16x256"}                      # dendrites x somata, space separated
 NONLINS=${NONLINS:-"leaky supra sub ca v1"}   # base_model.py --nonlin values (branch loops MIXES)
@@ -48,7 +51,7 @@ run_one() {  # seed dends soma nonlin [mix]
   # shellcheck disable=SC2086  # EXTRA is meant to be word-split into flags
   $PYTHON base_model.py --dataset "$DATASET" --sampling "$SAMPLING" --layers "$LAYERS" \
     --nonlin "$nl" ${mixflag[@]+"${mixflag[@]}"} --dends "$d" --soma "$s" --seed "$seed" \
-    --out "$OUT" $EXTRA  # the mixflag idiom keeps bash 3.2 (macOS) happy with an empty array under set -u
+    --out "$OUT" --skip-existing $EXTRA  # mixflag idiom: bash 3.2 (macOS) + empty array + set -u
 }
 
 run() {

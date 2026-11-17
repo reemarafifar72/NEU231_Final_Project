@@ -200,6 +200,10 @@ class V1DendriticNonlinearity(nn.Module):
                                                   so it also carries the linear (leak) term
         ca(u)    = A * sigmoid(k * (u - theta))   high-threshold, all-or-none Ca2+ plateau
 
+    With leak > 0 every channel also conducts passively: f_k(u) + leak * u. That is the slope
+    LeakyReLU keeps for negative input, and it removes the dead (supra, u < 0) and saturated
+    (sub, Ca) regimes of the fixed functions. leak = 0 reproduces the original channels.
+
     All constants are fixed hyperparameters (not learned) and this module has no parameters.
     Only the cable weights that read these channels (MaskedLinear(3 * D, soma)) are trained,
     so each soma learns how much of each nonlinearity to use from each of its dendrites.
@@ -210,31 +214,35 @@ class V1DendriticNonlinearity(nn.Module):
     CHANNELS = ("supra", "sub", "ca")
 
     def __init__(self, supra_p=2.0, sub_sat=1.0, ca_thresh=1.0, ca_gain=10.0, ca_amp=1.0,
-                 channels=CHANNELS):
+                 leak=0.0, channels=CHANNELS):
         super().__init__()
         if supra_p < 1.0:
             raise ValueError("supra_p must be >= 1: d/du relu(u)**p is unbounded at 0 for p < 1")
-        if sub_sat <= 0 or ca_gain <= 0:
-            raise ValueError("sub_sat and ca_gain must be > 0")
+        if sub_sat <= 0 or ca_gain <= 0 or leak < 0:
+            raise ValueError("sub_sat and ca_gain must be > 0 and leak >= 0")
         bad = [c for c in channels if c not in self.CHANNELS]
         if bad or not channels:
             raise ValueError(f"channels must be a non-empty subset of {self.CHANNELS}, got {channels}")
         self.channels = tuple(c for c in self.CHANNELS if c in channels)
         self.supra_p, self.sub_sat = float(supra_p), float(sub_sat)
         self.ca_thresh, self.ca_gain, self.ca_amp = float(ca_thresh), float(ca_gain), float(ca_amp)
+        self.leak = float(leak)
 
     @property
     def n_channels(self):
         return len(self.channels)
 
+    def _leak(self, u):
+        return self.leak * u if self.leak else 0.0
+
     def supra(self, u):
-        return F.relu(u).pow(self.supra_p)
+        return F.relu(u).pow(self.supra_p) + self._leak(u)
 
     def sub(self, u):
-        return self.sub_sat * torch.tanh(u / self.sub_sat)
+        return self.sub_sat * torch.tanh(u / self.sub_sat) + self._leak(u)
 
     def ca(self, u):
-        return self.ca_amp * torch.sigmoid(self.ca_gain * (u - self.ca_thresh))
+        return self.ca_amp * torch.sigmoid(self.ca_gain * (u - self.ca_thresh)) + self._leak(u)
 
     def forward(self, u):
         outs = [getattr(self, c)(u) for c in self.channels]
@@ -242,7 +250,8 @@ class V1DendriticNonlinearity(nn.Module):
 
     def extra_repr(self):
         return (f"channels={self.channels}, supra_p={self.supra_p}, sub_sat={self.sub_sat}, "
-                f"ca_thresh={self.ca_thresh}, ca_gain={self.ca_gain}, ca_amp={self.ca_amp}")
+                f"ca_thresh={self.ca_thresh}, ca_gain={self.ca_gain}, ca_amp={self.ca_amp}, "
+                f"leak={self.leak}")
 
 
 def parse_mix(mix):
@@ -313,6 +322,86 @@ class BranchTypeNonlinearity(nn.Module):
         return f"mix={self.mix} -> counts {self.counts} per soma; {self.bank.extra_repr()}"
 
 
+def apical_flags(dends, soma, apical_frac):
+    """Which dendrites are apical: the last round(apical_frac * dends) of every soma's block.
+
+    Returns a boolean array of length dends * soma. Shared by the Ca gate and --apical-input so
+    the two always mean the same dendrites.
+    """
+    n_apical = max(1, int(round(apical_frac * dends)))
+    if n_apical >= dends:
+        raise ValueError(f"apical_frac {apical_frac} leaves no basal dendrites at {dends} dendrites")
+    return np.array(([False] * (dends - n_apical) + [True] * n_apical) * soma)
+
+
+class CaGateSoma(nn.Module):
+    """Soma whose basal drive is multiplied by an apical Ca2+ plateau (BAC-firing-like).
+
+    Each soma's `dends` dendrites are split into basal (the first n_basal) and apical (the
+    rest). Two masked cable layers read them separately:
+
+        B = sum_basal  w * h + b          basal drive            (B, soma)
+        A = sum_apical v * h + c          apical drive           (B, soma)
+        Ca = sigmoid(k * (A - theta))     apical plateau in [0, 1]
+        out = B * (1 + g * Ca)            apical gates basal; soma_act is applied afterwards
+
+    Apical input alone does nothing (B = 0), basal alone gives the normal response, and both
+    together amplify it by up to (1 + g): the coincidence detection a weighted sum of fixed
+    functions cannot express. Note that a negative B is amplified too; the soma's LeakyReLU
+    then clips it to slope 0.1. Masked weights total D, as in the baseline; there are two bias
+    vectors instead of one. theta applies to the learned sum A, so the apical bias can shift
+    the effective threshold.
+    """
+
+    def __init__(self, dends, soma, apical_frac=0.25, ca_thresh=1.0, ca_gain=10.0, ca_amp=1.0):
+        super().__init__()
+        is_apical = apical_flags(dends, soma, apical_frac)  # (D,)
+        n_apical = int(is_apical[:dends].sum())
+        self.n_basal, self.n_apical = dends - n_apical, n_apical
+        self.ca_thresh, self.ca_gain, self.ca_amp = float(ca_thresh), float(ca_gain), float(ca_amp)
+        cm = cable_mask(dends, soma)
+        self.basal = MaskedLinear(dends * soma, soma, cm * (~is_apical)[:, None])
+        self.apical = MaskedLinear(dends * soma, soma, cm * is_apical[:, None])
+        self.register_buffer("is_apical", torch.as_tensor(is_apical))
+        self.last_gate = None  # detached Ca values from the last forward pass, for analysis
+
+    def forward(self, h):
+        basal, apical = self.basal(h), self.apical(h)
+        ca = torch.sigmoid(self.ca_gain * (apical - self.ca_thresh))
+        self.last_gate = ca.detach()
+        return basal * (1 + self.ca_amp * ca)
+
+    def extra_repr(self):
+        return (f"basal={self.n_basal}, apical={self.n_apical} dendrites per soma, "
+                f"ca_thresh={self.ca_thresh}, ca_gain={self.ca_gain}, ca_amp={self.ca_amp}")
+
+
+# Fixed constants of the biological nonlinearities and their defaults. Runs that change any of
+# them get a tag suffix such as _thr0.5_leak0.1 so they never collide with default runs.
+# plot_results.py rebuilds the same suffix to name the model variant: keep the two in sync.
+CONSTANT_DEFAULTS = dict(supra_p=2.0, sub_sat=1.0, ca_thresh=1.0, ca_gain=10.0, ca_amp=1.0,
+                         leak=0.0, apical_frac=0.25)
+CONSTANT_SHORT = dict(supra_p="p", sub_sat="sat", ca_thresh="thr", ca_gain="gain", ca_amp="amp",
+                      leak="leak", apical_frac="ap")
+
+
+def constants_suffix(values, nonlin):
+    """'_thr0.5_leak0.1' for the constants in `values` that differ from their defaults.
+
+    Empty for the paper baseline and for default constants. apical_frac only counts for gate.
+    """
+    if nonlin == "leaky":
+        return ""
+    parts = []
+    for key, default in CONSTANT_DEFAULTS.items():
+        if key == "apical_frac" and nonlin != "gate":
+            continue
+        v = values.get(key, default)
+        if v is not None and float(v) != default:
+            parts.append(f"{CONSTANT_SHORT[key]}{float(v):g}")
+    return "".join("_" + p for p in parts)
+
+
 class DendriticANN(nn.Module):
     """
     Adapted from get_model in opt.py.
@@ -330,49 +419,99 @@ class DendriticANN(nn.Module):
     nonlin="branch", mix="S:B:C" (per-dendrite ratio):
         each dendrite uses one V1 nonlinearity; the ratio sets how many of a soma's dendrites
         are supra, sub and Ca. Same cable layer and parameter count as the baseline.
+    nonlin="gate" (apical Ca gate, see CaGateSoma):
+        dendrites use `basal_nonlin` (LeakyReLU by default); each soma's basal drive is
+        multiplied by (1 + g * Ca) where Ca is a plateau on its apical dendrites' drive.
+        Same masked weights as the baseline plus one extra bias vector per layer.
+
+    apical_input="coarse" (any nonlin): in the first layer, each soma's apical dendrites (the
+        last apical_frac of its dendrites) take their synapses from an average-pooled copy of
+        the image (apical_pool x apical_pool blocks) instead of from the image itself: a
+        low-resolution, wide-field "context" view, as the apical tuft receives in cortex.
+        Basal dendrites keep the wiring they have with apical_input="same". Pooling has no
+        parameters and every dendrite keeps `synapses` inputs, so the parameter count is
+        unchanged.
     """
 
-    NONLINS = ("leaky", "v1", "supra", "sub", "ca", "branch")
+    NONLINS = ("leaky", "v1", "supra", "sub", "ca", "branch", "gate")
 
     def __init__(self, img_shape, channels, num_classes, dends=16, soma=128,
                  synapses=16, layers=1, sampling="local", relu_slope=0.1, seed=0,
-                 nonlin="leaky", nonlin_params=None, mix="1:1:1"):
+                 nonlin="leaky", nonlin_params=None, mix="1:1:1", basal_nonlin="leaky",
+                 apical_frac=0.25, apical_input="same", apical_pool=4):
         super().__init__()
+        if apical_input not in ("same", "coarse"):
+            raise ValueError("apical_input must be 'same' or 'coarse'")
         if nonlin not in self.NONLINS:
             raise ValueError(f"nonlin must be one of {self.NONLINS}")
+        if basal_nonlin not in ("leaky",) + V1DendriticNonlinearity.CHANNELS:
+            raise ValueError("basal_nonlin must be leaky, supra, sub or ca")
         rng = np.random.default_rng(seed)
-        self.nonlin, self.mix = nonlin, mix
+        self.nonlin, self.mix, self.basal_nonlin = nonlin, mix, basal_nonlin
+        params = dict(nonlin_params or {})
+        # the gate's soma takes the Ca constants; every other model keeps them in its dendrites
+        gate_params = ({k: params.pop(k) for k in ("ca_thresh", "ca_gain", "ca_amp") if k in params}
+                       if nonlin == "gate" else {})
         n_ch = 3 if nonlin == "v1" else 1  # channels per dendrite feeding the soma
         self.dend_layers = nn.ModuleList()
         self.soma_layers = nn.ModuleList()
 
         shape, ch = img_shape, channels
         n_in = shape[0] * shape[1] * ch
-        for _ in range(layers):
+        self.coarse = None  # (rows, cols, channels, pool) of the image when apical input is coarse
+        for layer in range(layers):
             syn = synaptic_mask(shape, dends, soma, synapses, ch, sampling, rng)
+            if apical_input == "coarse" and layer == 0:
+                # the fine mask above used the same rng draws as apical_input="same", so basal
+                # wiring is identical for a given seed; the coarse mask has its own rng
+                if shape[0] % apical_pool or shape[1] % apical_pool:
+                    raise ValueError(f"apical_pool {apical_pool} does not divide image {shape}")
+                c_shape = (shape[0] // apical_pool, shape[1] // apical_pool)
+                c_syn = synaptic_mask(c_shape, dends, soma, synapses, ch, sampling,
+                                      np.random.default_rng([seed, 1]))
+                is_apical = apical_flags(dends, soma, apical_frac)
+                syn = np.vstack([syn * ~is_apical[None, :], c_syn * is_apical[None, :]])
+                n_in += c_shape[0] * c_shape[1] * ch
+                self.coarse = (shape[0], shape[1], ch, apical_pool)
             self.dend_layers.append(MaskedLinear(n_in, dends * soma, syn))
-            cm = cable_mask(dends, soma)
-            if n_ch > 1:
-                # channel-major: rows [k*D, (k+1)*D) are channel k of every dendrite, with the
-                # same per-soma block structure, so each soma still reads only its own dendrites
-                cm = np.tile(cm, (n_ch, 1))
-            self.soma_layers.append(MaskedLinear(n_ch * dends * soma, soma, cm))
+            if nonlin == "gate":
+                self.soma_layers.append(CaGateSoma(dends, soma, apical_frac, **gate_params))
+            else:
+                cm = cable_mask(dends, soma)
+                if n_ch > 1:
+                    # channel-major: rows [k*D, (k+1)*D) are channel k of every dendrite, with
+                    # the same per-soma blocks, so each soma still reads only its own dendrites
+                    cm = np.tile(cm, (n_ch, 1))
+                self.soma_layers.append(MaskedLinear(n_ch * dends * soma, soma, cm))
             # next layer samples from this layer's somata arranged on a 2D grid
             shape, ch, n_in = grid_shape(soma), 1, soma
 
         self.output = MaskedLinear(soma, num_classes)  # fully connected
         # Dendritic and somatic nonlinearities (both LeakyReLU 0.1 in the paper)
-        if nonlin == "leaky":
+        if nonlin == "gate":
+            params.update(gate_params)  # the dendritic channel (if any) keeps the Ca constants
+            self.dend_act = (nn.LeakyReLU(relu_slope) if basal_nonlin == "leaky"
+                             else V1DendriticNonlinearity(channels=(basal_nonlin,), **params))
+        elif nonlin == "leaky":
             self.dend_act = nn.LeakyReLU(relu_slope)
         elif nonlin == "v1":
-            self.dend_act = V1DendriticNonlinearity(**(nonlin_params or {}))
+            self.dend_act = V1DendriticNonlinearity(**params)
         elif nonlin == "branch":  # one nonlinearity per dendrite, mixed within each soma
-            self.dend_act = BranchTypeNonlinearity(dends, soma, mix, **(nonlin_params or {}))
+            self.dend_act = BranchTypeNonlinearity(dends, soma, mix, **params)
         else:  # the same single nonlinearity for every dendrite
-            self.dend_act = V1DendriticNonlinearity(channels=(nonlin,), **(nonlin_params or {}))
+            self.dend_act = V1DendriticNonlinearity(channels=(nonlin,), **params)
         self.soma_act = nn.LeakyReLU(relu_slope)
 
+    def with_coarse_view(self, x):
+        """Append the average-pooled image (channels-last, like the input) to the flat input."""
+        M, N, ch, pool = self.coarse
+        img = x.view(len(x), M, N, ch).permute(0, 3, 1, 2)
+        pooled = F.avg_pool2d(img, pool).permute(0, 2, 3, 1).reshape(len(x), -1)
+        return torch.cat([x, pooled], dim=1)
+
     def forward(self, x):
+        if self.coarse is not None:
+            x = self.with_coarse_view(x)
         for dend, soma in zip(self.dend_layers, self.soma_layers):
             x = self.dend_act(dend(x))
             x = self.soma_act(soma(x))
@@ -450,7 +589,7 @@ def evaluate(model, x, y, batch_size):
     return total_loss / len(x), correct / len(x)
 
 
-def train(model, data, epochs, lr, batch_size, device, seed):
+def train(model, data, epochs, lr, batch_size, device, seed, weight_decay=0.0):
     """The training loop. For each epoch it:
 
     1. Shuffles the training images.
@@ -462,16 +601,23 @@ def train(model, data, epochs, lr, batch_size, device, seed):
     3. Records training loss and accuracy, then calls evaluate on the validation set and
     prints a progress line.
 
-    4. After the last epoch it evaluates once on the test set. It returns a dictionary of all these numbers."""
+    4. After the last epoch it evaluates once on the test set. It returns a dictionary of all these numbers.
+
+    Whenever validation accuracy reaches a new best, the test set is also evaluated and kept as
+    test_acc_best_val / test_loss_best_val (early stopping chosen on validation, never on test).
+    test_acc / test_loss stay the final-epoch values. weight_decay is Adam's L2 penalty on
+    every parameter (0 = the paper's setting)."""
 
     to_t = lambda a, dt: torch.as_tensor(a, dtype=dt, device=device)
     xtr, ytr = to_t(data["train"][0], torch.float32), to_t(data["train"][1], torch.long)
     xva, yva = to_t(data["val"][0], torch.float32), to_t(data["val"][1], torch.long)
     xte, yte = to_t(data["test"][0], torch.float32), to_t(data["test"][1], torch.long)
 
-    opt = torch.optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.999))
+    opt = torch.optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.999),
+                           weight_decay=weight_decay)
     gen = torch.Generator().manual_seed(seed)
     hist = {"train_loss": [], "train_acc": [], "val_loss": [], "val_acc": []}
+    best_val = -1.0
 
     for ep in range(epochs):
         t0 = time.time()
@@ -492,12 +638,40 @@ def train(model, data, epochs, lr, batch_size, device, seed):
         hist["train_acc"].append(run_correct / len(xtr))
         hist["val_loss"].append(vl)
         hist["val_acc"].append(va)
+        if va > best_val:  # first epoch to reach this validation accuracy
+            best_val = va
+            hist["best_val_epoch"] = ep + 1
+            hist["test_loss_best_val"], hist["test_acc_best_val"] = evaluate(model, xte, yte,
+                                                                             batch_size)
         print(f"epoch {ep + 1:3d}/{epochs}  train loss {hist['train_loss'][-1]:.4f} "
               f"acc {hist['train_acc'][-1]:.4f} | val loss {vl:.4f} acc {va:.4f} "
               f"| {time.time() - t0:.1f}s")
 
     hist["test_loss"], hist["test_acc"] = evaluate(model, xte, yte, batch_size)
     return hist
+
+
+def run_tag(args):
+    """Results file stem. The paper baseline keeps its original tag; other nonlinearities are
+    named (dann_v1_..., dann_branch12-3-1_..., dann_gate_bsupra_...), non-default constants
+    add a suffix (_thr0.5_leak0.1), --apical-input coarse adds _apcoarse, --weight-decay adds _wd<value> (for any model, the baseline
+    included) and --train-subset adds _nN."""
+    nl = "" if args.nonlin == "leaky" else f"_{args.nonlin}"
+    if args.nonlin == "branch":
+        nl += args.mix.replace(":", "-")
+    if args.nonlin == "gate" and args.basal_nonlin != "leaky":
+        nl += f"_b{args.basal_nonlin}"
+    ap = ""
+    if getattr(args, "apical_input", "same") != "same":
+        pool = getattr(args, "apical_pool", 4)
+        ap = f"_ap{args.apical_input}" + (f"{pool}" if pool != 4 else "")
+        if args.nonlin != "gate" and args.apical_frac != CONSTANT_DEFAULTS["apical_frac"]:
+            ap += f"_ap{args.apical_frac:g}"  # the gate already tags its apical fraction
+    return (f"dann{nl}_{args.sampling}_{args.dataset}_L{args.layers}_d{args.dends}_s{args.soma}"
+            f"{constants_suffix(vars(args), args.nonlin)}{ap}"
+            + (f"_wd{args.weight_decay:g}" if getattr(args, "weight_decay", 0) else "")
+            + f"_seed{args.seed}"
+            + (f"_n{args.train_subset}" if args.train_subset else ""))
 
 
 def main():
@@ -524,9 +698,25 @@ def main():
                    help="ca(u) = A * sigmoid(k * (u - theta)); this is theta")
     g.add_argument("--ca-gain", type=float, default=10.0, help="k in the Ca spike sigmoid")
     g.add_argument("--ca-amp", type=float, default=1.0, help="A, the Ca plateau amplitude")
+    g.add_argument("--leak", type=float, default=0.0,
+                   help="passive leak added to every channel: f(u) + leak * u (0.1 = LeakyReLU's slope)")
+    gg = p.add_argument_group("apical Ca gate (only used with --nonlin gate)")
+    gg.add_argument("--basal-nonlin", default="leaky", choices=["leaky", "supra", "sub", "ca"],
+                    help="nonlinearity of the dendrites (basal and apical) in the gate model")
+    gg.add_argument("--apical-frac", type=float, default=0.25,
+                    help="fraction of each soma's dendrites that are apical (0.25 of 16 = 4)")
+    ga = p.add_argument_group("apical context (any --nonlin)")
+    ga.add_argument("--apical-input", default="same", choices=["same", "coarse"],
+                    help="what the apical dendrites (the last --apical-frac of each soma's) read: "
+                         "same = local patches of the image like every dendrite (default); "
+                         "coarse = an average-pooled, low-resolution copy of the image")
+    ga.add_argument("--apical-pool", type=int, default=4,
+                    help="pooling block size of the coarse apical view (4: 28x28 -> 7x7)")
     p.add_argument("--epochs", type=int, default=None, help="default: 25 fmnist, 50 cifar10")
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--batch-size", type=int, default=128)
+    p.add_argument("--weight-decay", type=float, default=0.0,
+                   help="Adam L2 weight decay on all parameters (0 = paper; run is tagged _wd<value>)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--device", default="auto", help="auto, cpu, cuda, or mps")
     p.add_argument("--data-dir", default="data")
@@ -534,7 +724,15 @@ def main():
                    help="train on the first N shuffled training images; for quick checks only "
                         "(run is tagged _nN and left out of the figures)")
     p.add_argument("--out", default="results")
+    p.add_argument("--skip-existing", action="store_true",
+                   help="exit at once if <out>/<tag>.json already exists (for sweep scripts)")
     args = p.parse_args()
+
+    out = Path(args.out)
+    tag = run_tag(args)
+    if args.skip_existing and (out / f"{tag}.json").exists():
+        print(f"skip {tag} (already done)")
+        return
 
     torch.manual_seed(args.seed)
     device = pick_device(args.device)
@@ -543,27 +741,24 @@ def main():
     data, img_shape, channels, n_classes = load_data(args.dataset, args.data_dir, seed=args.seed,
                                                      train_subset=args.train_subset)
     nonlin_params = dict(supra_p=args.supra_p, sub_sat=args.sub_sat, ca_thresh=args.ca_thresh,
-                         ca_gain=args.ca_gain, ca_amp=args.ca_amp)
+                         ca_gain=args.ca_gain, ca_amp=args.ca_amp, leak=args.leak)
     model = DendriticANN(img_shape, channels, n_classes, dends=args.dends, soma=args.soma,
                          synapses=args.synapses, layers=args.layers, sampling=args.sampling,
                          seed=args.seed, nonlin=args.nonlin, nonlin_params=nonlin_params,
-                         mix=args.mix).to(device)
+                         mix=args.mix, basal_nonlin=args.basal_nonlin,
+                         apical_frac=args.apical_frac, apical_input=args.apical_input,
+                         apical_pool=args.apical_pool).to(device)
 
     print(f"dANN-{args.sampling} | {args.nonlin} dendrites | {args.dataset} | {args.layers} layer(s) | "
           f"{args.dends} dends x {args.soma} somata | {model.n_params():,} trainable params | {device}")
     print(f"images: train {len(data['train'][0]):,} | val {len(data['val'][0]):,} | "
           f"test {len(data['test'][0]):,}" + ("  (TRAIN SUBSET)" if args.train_subset else ""))
-    hist = train(model, data, epochs, args.lr, args.batch_size, device, args.seed)
-    print(f"\nTest acc: {hist['test_acc']:.4f} | Test loss: {hist['test_loss']:.4f}")
+    hist = train(model, data, epochs, args.lr, args.batch_size, device, args.seed,
+                 weight_decay=args.weight_decay)
+    print(f"\nTest acc: {hist['test_acc']:.4f} | Test loss: {hist['test_loss']:.4f}"
+          f" | at best-validation epoch {hist['best_val_epoch']}: {hist['test_acc_best_val']:.4f}")
 
-    out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    # The paper baseline keeps its original tag; other nonlinearities are named (dann_v1_...).
-    nl = "" if args.nonlin == "leaky" else f"_{args.nonlin}"
-    if args.nonlin == "branch":
-        nl += args.mix.replace(":", "-")  # dann_branch12-3-1_...
-    tag = (f"dann{nl}_{args.sampling}_{args.dataset}_L{args.layers}_d{args.dends}_s{args.soma}"
-           f"_seed{args.seed}" + (f"_n{args.train_subset}" if args.train_subset else ""))
     hist.update(vars(args), n_params=model.n_params(), epochs=epochs)
     (out / f"{tag}.json").write_text(json.dumps(hist, indent=2))
     torch.save(model.state_dict(), out / f"{tag}.pt")

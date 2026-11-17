@@ -1,2 +1,2 @@
-dataset,model,size,seeds,leaky_acc,leaky_acc_sd,supra_acc,supra_acc_sd,sub_acc,sub_acc_sd,ca_acc,ca_acc_sd,v1_acc,v1_acc_sd,best_single,gap_pp,tolerance_pp,verdict
-cifar10,dANN-LRF,16 dends x 256 somata,3,57.427,0.934,56.227,0.165,55.893,0.828,55.503,0.235,57.403,0.724,leaky,-0.023,2.363,single is enough
+dataset,model,size,seeds,leaky_acc,leaky_acc_sd,supra_acc,supra_acc_sd,sub_acc,sub_acc_sd,ca_acc,ca_acc_sd,v1_acc,v1_acc_sd,gate_acc,gate_acc_sd,best_single,gap_pp,tolerance_pp,verdict,gate_gap_pp,gate_tolerance_pp,gate_verdict,variants
+cifar10,dANN-LRF,16 dends x 256 somata,3,57.32,0.846,56.717,0.311,58.55,0.393,58.222,0.912,58.57,0.501,57.557,0.637,sub,0.02,1.273,single is enough,-0.993,1.497,no advantage,supra=supra@p1.5_leak0.1; sub=sub@sat0.2; ca=ca@thr0; v1=v1@thr0

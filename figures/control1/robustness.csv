@@ -1,0 +1,421 @@
+dataset,variant,key,seed,perturbation,level,acc
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.0,89.4
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.05,88.5
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.1,85.83
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.2,70.08
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.3,49.53
+fmnist,branch 1:1:1,branch:1:1:1,1,noise,0.5,23.94
+fmnist,branch 1:1:1,branch:1:1:1,1,occlusion,0.0,89.4
+fmnist,branch 1:1:1,branch:1:1:1,1,occlusion,0.1,79.77
+fmnist,branch 1:1:1,branch:1:1:1,1,occlusion,0.25,66.19
+fmnist,branch 1:1:1,branch:1:1:1,1,occlusion,0.4,44.57
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.0,89.43
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.05,88.02
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.1,84.98
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.2,67.59
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.3,46.12
+fmnist,branch 1:1:1,branch:1:1:1,2,noise,0.5,22.64
+fmnist,branch 1:1:1,branch:1:1:1,2,occlusion,0.0,89.43
+fmnist,branch 1:1:1,branch:1:1:1,2,occlusion,0.1,79.31
+fmnist,branch 1:1:1,branch:1:1:1,2,occlusion,0.25,64.66
+fmnist,branch 1:1:1,branch:1:1:1,2,occlusion,0.4,43.48
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.0,88.92
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.05,87.11
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.1,81.94
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.2,59.95
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.3,40.97
+fmnist,branch 1:1:1,branch:1:1:1,3,noise,0.5,23.27
+fmnist,branch 1:1:1,branch:1:1:1,3,occlusion,0.0,88.92
+fmnist,branch 1:1:1,branch:1:1:1,3,occlusion,0.1,78.29
+fmnist,branch 1:1:1,branch:1:1:1,3,occlusion,0.25,64.75
+fmnist,branch 1:1:1,branch:1:1:1,3,occlusion,0.4,42.97
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.0,89.33
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.05,88.44
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.1,84.66
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.2,66.66
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.3,47.79
+fmnist,branch 1:3:12,branch:1:3:12,1,noise,0.5,25.67
+fmnist,branch 1:3:12,branch:1:3:12,1,occlusion,0.0,89.33
+fmnist,branch 1:3:12,branch:1:3:12,1,occlusion,0.1,80.52
+fmnist,branch 1:3:12,branch:1:3:12,1,occlusion,0.25,66.15
+fmnist,branch 1:3:12,branch:1:3:12,1,occlusion,0.4,45.29
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.0,89.63
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.05,88.16
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.1,84.09
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.2,63.11
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.3,41.22
+fmnist,branch 1:3:12,branch:1:3:12,2,noise,0.5,18.57
+fmnist,branch 1:3:12,branch:1:3:12,2,occlusion,0.0,89.63
+fmnist,branch 1:3:12,branch:1:3:12,2,occlusion,0.1,80.1
+fmnist,branch 1:3:12,branch:1:3:12,2,occlusion,0.25,65.84
+fmnist,branch 1:3:12,branch:1:3:12,2,occlusion,0.4,44.31
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.0,89.15
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.05,86.94
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.1,81.27
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.2,61.14
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.3,42.32
+fmnist,branch 1:3:12,branch:1:3:12,3,noise,0.5,22.24
+fmnist,branch 1:3:12,branch:1:3:12,3,occlusion,0.0,89.15
+fmnist,branch 1:3:12,branch:1:3:12,3,occlusion,0.1,79.35
+fmnist,branch 1:3:12,branch:1:3:12,3,occlusion,0.25,66.15
+fmnist,branch 1:3:12,branch:1:3:12,3,occlusion,0.4,45.74
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.0,89.53
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.05,88.4
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.1,86.03
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.2,72.34
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.3,54.84
+fmnist,branch 12:3:1,branch:12:3:1,1,noise,0.5,28.11
+fmnist,branch 12:3:1,branch:12:3:1,1,occlusion,0.0,89.53
+fmnist,branch 12:3:1,branch:12:3:1,1,occlusion,0.1,79.54
+fmnist,branch 12:3:1,branch:12:3:1,1,occlusion,0.25,65.57
+fmnist,branch 12:3:1,branch:12:3:1,1,occlusion,0.4,43.98
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.0,89.27
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.05,88.18
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.1,85.49
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.2,68.82
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.3,47.34
+fmnist,branch 12:3:1,branch:12:3:1,2,noise,0.5,24.94
+fmnist,branch 12:3:1,branch:12:3:1,2,occlusion,0.0,89.27
+fmnist,branch 12:3:1,branch:12:3:1,2,occlusion,0.1,80.51
+fmnist,branch 12:3:1,branch:12:3:1,2,occlusion,0.25,65.04
+fmnist,branch 12:3:1,branch:12:3:1,2,occlusion,0.4,42.97
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.0,88.49
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.05,86.98
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.1,82.75
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.2,64.1
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.3,45.53
+fmnist,branch 12:3:1,branch:12:3:1,3,noise,0.5,23.46
+fmnist,branch 12:3:1,branch:12:3:1,3,occlusion,0.0,88.49
+fmnist,branch 12:3:1,branch:12:3:1,3,occlusion,0.1,78.52
+fmnist,branch 12:3:1,branch:12:3:1,3,occlusion,0.25,63.67
+fmnist,branch 12:3:1,branch:12:3:1,3,occlusion,0.4,41.56
+fmnist,Ca-only,ca,1,noise,0.0,89.41
+fmnist,Ca-only,ca,1,noise,0.05,88.34
+fmnist,Ca-only,ca,1,noise,0.1,85.36
+fmnist,Ca-only,ca,1,noise,0.2,64.02
+fmnist,Ca-only,ca,1,noise,0.3,39.99
+fmnist,Ca-only,ca,1,noise,0.5,17.01
+fmnist,Ca-only,ca,1,occlusion,0.0,89.41
+fmnist,Ca-only,ca,1,occlusion,0.1,80.07
+fmnist,Ca-only,ca,1,occlusion,0.25,66.44
+fmnist,Ca-only,ca,1,occlusion,0.4,45.97
+fmnist,Ca-only,ca,2,noise,0.0,89.26
+fmnist,Ca-only,ca,2,noise,0.05,88.56
+fmnist,Ca-only,ca,2,noise,0.1,86.09
+fmnist,Ca-only,ca,2,noise,0.2,65.98
+fmnist,Ca-only,ca,2,noise,0.3,41.35
+fmnist,Ca-only,ca,2,noise,0.5,18.16
+fmnist,Ca-only,ca,2,occlusion,0.0,89.26
+fmnist,Ca-only,ca,2,occlusion,0.1,80.2
+fmnist,Ca-only,ca,2,occlusion,0.25,66.21
+fmnist,Ca-only,ca,2,occlusion,0.4,44.54
+fmnist,Ca-only,ca,3,noise,0.0,88.31
+fmnist,Ca-only,ca,3,noise,0.05,87.49
+fmnist,Ca-only,ca,3,noise,0.1,82.77
+fmnist,Ca-only,ca,3,noise,0.2,57.77
+fmnist,Ca-only,ca,3,noise,0.3,37.63
+fmnist,Ca-only,ca,3,noise,0.5,17.86
+fmnist,Ca-only,ca,3,occlusion,0.0,88.31
+fmnist,Ca-only,ca,3,occlusion,0.1,78.4
+fmnist,Ca-only,ca,3,occlusion,0.25,65.03
+fmnist,Ca-only,ca,3,occlusion,0.4,42.66
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.0,90.21
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.05,88.88
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.1,82.74
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.2,58.89
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.3,41.15
+fmnist,Ca-only [thr0],ca@thr0,1,noise,0.5,24.3
+fmnist,Ca-only [thr0],ca@thr0,1,occlusion,0.0,90.21
+fmnist,Ca-only [thr0],ca@thr0,1,occlusion,0.1,81.79
+fmnist,Ca-only [thr0],ca@thr0,1,occlusion,0.25,67.77
+fmnist,Ca-only [thr0],ca@thr0,1,occlusion,0.4,47.35
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.0,90.11
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.05,88.1
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.1,79.87
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.2,54.76
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.3,39.04
+fmnist,Ca-only [thr0],ca@thr0,2,noise,0.5,24.84
+fmnist,Ca-only [thr0],ca@thr0,2,occlusion,0.0,90.11
+fmnist,Ca-only [thr0],ca@thr0,2,occlusion,0.1,81.49
+fmnist,Ca-only [thr0],ca@thr0,2,occlusion,0.25,67.01
+fmnist,Ca-only [thr0],ca@thr0,2,occlusion,0.4,45.6
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.0,88.77
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.05,85.39
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.1,76.32
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.2,53.87
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.3,41.09
+fmnist,Ca-only [thr0],ca@thr0,3,noise,0.5,26.93
+fmnist,Ca-only [thr0],ca@thr0,3,occlusion,0.0,88.77
+fmnist,Ca-only [thr0],ca@thr0,3,occlusion,0.1,79.9
+fmnist,Ca-only [thr0],ca@thr0,3,occlusion,0.25,66.45
+fmnist,Ca-only [thr0],ca@thr0,3,occlusion,0.4,44.98
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.0,89.46
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.05,88.31
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.1,84.29
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.2,66.13
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.3,46.78
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,noise,0.5,24.57
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,occlusion,0.0,89.46
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,occlusion,0.1,79.06
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,occlusion,0.25,64.82
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,1,occlusion,0.4,44.4
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.0,89.52
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.05,88.47
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.1,85.08
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.2,67.35
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.3,46.61
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,noise,0.5,25.33
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,occlusion,0.0,89.52
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,occlusion,0.1,79.35
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,occlusion,0.25,64.16
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,2,occlusion,0.4,42.18
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.0,88.75
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.05,87.82
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.1,84.51
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.2,69.42
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.3,50.56
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,noise,0.5,27.81
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,occlusion,0.0,88.75
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,occlusion,0.1,78.89
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,occlusion,0.25,64.53
+fmnist,Ca gate (BAC) [apcoarse],gate@apcoarse,3,occlusion,0.4,42.62
+fmnist,Ca gate (BAC),gate,1,noise,0.0,89.79
+fmnist,Ca gate (BAC),gate,1,noise,0.05,88.83
+fmnist,Ca gate (BAC),gate,1,noise,0.1,85.48
+fmnist,Ca gate (BAC),gate,1,noise,0.2,67.65
+fmnist,Ca gate (BAC),gate,1,noise,0.3,47.78
+fmnist,Ca gate (BAC),gate,1,noise,0.5,26.5
+fmnist,Ca gate (BAC),gate,1,occlusion,0.0,89.79
+fmnist,Ca gate (BAC),gate,1,occlusion,0.1,78.6
+fmnist,Ca gate (BAC),gate,1,occlusion,0.25,62.27
+fmnist,Ca gate (BAC),gate,1,occlusion,0.4,40.54
+fmnist,Ca gate (BAC),gate,2,noise,0.0,89.48
+fmnist,Ca gate (BAC),gate,2,noise,0.05,88.1
+fmnist,Ca gate (BAC),gate,2,noise,0.1,82.99
+fmnist,Ca gate (BAC),gate,2,noise,0.2,62.1
+fmnist,Ca gate (BAC),gate,2,noise,0.3,41.24
+fmnist,Ca gate (BAC),gate,2,noise,0.5,21.42
+fmnist,Ca gate (BAC),gate,2,occlusion,0.0,89.48
+fmnist,Ca gate (BAC),gate,2,occlusion,0.1,78.92
+fmnist,Ca gate (BAC),gate,2,occlusion,0.25,63.23
+fmnist,Ca gate (BAC),gate,2,occlusion,0.4,40.44
+fmnist,Ca gate (BAC),gate,3,noise,0.0,89.02
+fmnist,Ca gate (BAC),gate,3,noise,0.05,87.05
+fmnist,Ca gate (BAC),gate,3,noise,0.1,80.38
+fmnist,Ca gate (BAC),gate,3,noise,0.2,57.07
+fmnist,Ca gate (BAC),gate,3,noise,0.3,39.74
+fmnist,Ca gate (BAC),gate,3,noise,0.5,23.12
+fmnist,Ca gate (BAC),gate,3,occlusion,0.0,89.02
+fmnist,Ca gate (BAC),gate,3,occlusion,0.1,77.1
+fmnist,Ca gate (BAC),gate,3,occlusion,0.25,61.76
+fmnist,Ca gate (BAC),gate,3,occlusion,0.4,40.25
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.0,89.58
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.05,88.65
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.1,85.82
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.2,70.96
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.3,51.84
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,noise,0.5,30.1
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,occlusion,0.0,89.58
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,occlusion,0.1,79.14
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,occlusion,0.25,64.52
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,1,occlusion,0.4,43.19
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.0,89.41
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.05,88.06
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.1,84.24
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.2,65.82
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.3,43.86
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,noise,0.5,22.36
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,occlusion,0.0,89.41
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,occlusion,0.1,79.22
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,occlusion,0.25,63.61
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,2,occlusion,0.4,42.93
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.0,88.25
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.05,86.41
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.1,82.21
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.2,66.91
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.3,50.06
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,noise,0.5,28.24
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.0,88.25
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.1,77.99
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.25,63.9
+fmnist,LeakyReLU (paper) [apcoarse],leaky@apcoarse,3,occlusion,0.4,43.31
+fmnist,LeakyReLU (paper),leaky,1,noise,0.0,89.59
+fmnist,LeakyReLU (paper),leaky,1,noise,0.05,88.81
+fmnist,LeakyReLU (paper),leaky,1,noise,0.1,85.72
+fmnist,LeakyReLU (paper),leaky,1,noise,0.2,69.17
+fmnist,LeakyReLU (paper),leaky,1,noise,0.3,49.97
+fmnist,LeakyReLU (paper),leaky,1,noise,0.5,29.32
+fmnist,LeakyReLU (paper),leaky,1,occlusion,0.0,89.59
+fmnist,LeakyReLU (paper),leaky,1,occlusion,0.1,79.86
+fmnist,LeakyReLU (paper),leaky,1,occlusion,0.25,65.38
+fmnist,LeakyReLU (paper),leaky,1,occlusion,0.4,43.27
+fmnist,LeakyReLU (paper),leaky,2,noise,0.0,89.48
+fmnist,LeakyReLU (paper),leaky,2,noise,0.05,88.51
+fmnist,LeakyReLU (paper),leaky,2,noise,0.1,84.54
+fmnist,LeakyReLU (paper),leaky,2,noise,0.2,63.58
+fmnist,LeakyReLU (paper),leaky,2,noise,0.3,42.46
+fmnist,LeakyReLU (paper),leaky,2,noise,0.5,22.02
+fmnist,LeakyReLU (paper),leaky,2,occlusion,0.0,89.48
+fmnist,LeakyReLU (paper),leaky,2,occlusion,0.1,79.64
+fmnist,LeakyReLU (paper),leaky,2,occlusion,0.25,63.54
+fmnist,LeakyReLU (paper),leaky,2,occlusion,0.4,41.48
+fmnist,LeakyReLU (paper),leaky,3,noise,0.0,88.32
+fmnist,LeakyReLU (paper),leaky,3,noise,0.05,86.14
+fmnist,LeakyReLU (paper),leaky,3,noise,0.1,80.34
+fmnist,LeakyReLU (paper),leaky,3,noise,0.2,63.04
+fmnist,LeakyReLU (paper),leaky,3,noise,0.3,46.43
+fmnist,LeakyReLU (paper),leaky,3,noise,0.5,27.99
+fmnist,LeakyReLU (paper),leaky,3,occlusion,0.0,88.32
+fmnist,LeakyReLU (paper),leaky,3,occlusion,0.1,77.63
+fmnist,LeakyReLU (paper),leaky,3,occlusion,0.25,62.98
+fmnist,LeakyReLU (paper),leaky,3,occlusion,0.4,40.86
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.0,89.99
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.05,88.67
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.1,82.8
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.2,60.81
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.3,44.39
+fmnist,sub-only [sat0.2],sub@sat0.2,1,noise,0.5,28.71
+fmnist,sub-only [sat0.2],sub@sat0.2,1,occlusion,0.0,89.99
+fmnist,sub-only [sat0.2],sub@sat0.2,1,occlusion,0.1,81.24
+fmnist,sub-only [sat0.2],sub@sat0.2,1,occlusion,0.25,67.53
+fmnist,sub-only [sat0.2],sub@sat0.2,1,occlusion,0.4,47.4
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.0,90.17
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.05,88.31
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.1,81.08
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.2,56.06
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.3,40.04
+fmnist,sub-only [sat0.2],sub@sat0.2,2,noise,0.5,23.56
+fmnist,sub-only [sat0.2],sub@sat0.2,2,occlusion,0.0,90.17
+fmnist,sub-only [sat0.2],sub@sat0.2,2,occlusion,0.1,81.62
+fmnist,sub-only [sat0.2],sub@sat0.2,2,occlusion,0.25,67.82
+fmnist,sub-only [sat0.2],sub@sat0.2,2,occlusion,0.4,46.04
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.0,88.68
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.05,83.85
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.1,73.44
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.2,53.89
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.3,44.06
+fmnist,sub-only [sat0.2],sub@sat0.2,3,noise,0.5,32.75
+fmnist,sub-only [sat0.2],sub@sat0.2,3,occlusion,0.0,88.68
+fmnist,sub-only [sat0.2],sub@sat0.2,3,occlusion,0.1,79.53
+fmnist,sub-only [sat0.2],sub@sat0.2,3,occlusion,0.25,66.49
+fmnist,sub-only [sat0.2],sub@sat0.2,3,occlusion,0.4,45.32
+fmnist,sub-only,sub,1,noise,0.0,89.32
+fmnist,sub-only,sub,1,noise,0.05,87.88
+fmnist,sub-only,sub,1,noise,0.1,83.22
+fmnist,sub-only,sub,1,noise,0.2,64.85
+fmnist,sub-only,sub,1,noise,0.3,46.24
+fmnist,sub-only,sub,1,noise,0.5,25.48
+fmnist,sub-only,sub,1,occlusion,0.0,89.32
+fmnist,sub-only,sub,1,occlusion,0.1,76.73
+fmnist,sub-only,sub,1,occlusion,0.25,62.24
+fmnist,sub-only,sub,1,occlusion,0.4,41.41
+fmnist,sub-only,sub,2,noise,0.0,88.99
+fmnist,sub-only,sub,2,noise,0.05,87.38
+fmnist,sub-only,sub,2,noise,0.1,81.33
+fmnist,sub-only,sub,2,noise,0.2,56.82
+fmnist,sub-only,sub,2,noise,0.3,38.99
+fmnist,sub-only,sub,2,noise,0.5,23.5
+fmnist,sub-only,sub,2,occlusion,0.0,88.99
+fmnist,sub-only,sub,2,occlusion,0.1,76.96
+fmnist,sub-only,sub,2,occlusion,0.25,62.22
+fmnist,sub-only,sub,2,occlusion,0.4,40.91
+fmnist,sub-only,sub,3,noise,0.0,87.58
+fmnist,sub-only,sub,3,noise,0.05,85.76
+fmnist,sub-only,sub,3,noise,0.1,79.15
+fmnist,sub-only,sub,3,noise,0.2,55.88
+fmnist,sub-only,sub,3,noise,0.3,39.23
+fmnist,sub-only,sub,3,noise,0.5,22.47
+fmnist,sub-only,sub,3,occlusion,0.0,87.58
+fmnist,sub-only,sub,3,occlusion,0.1,75.58
+fmnist,sub-only,sub,3,occlusion,0.25,62.14
+fmnist,sub-only,sub,3,occlusion,0.4,40.24
+fmnist,supra-only,supra,1,noise,0.0,89.11
+fmnist,supra-only,supra,1,noise,0.05,88.42
+fmnist,supra-only,supra,1,noise,0.1,86.44
+fmnist,supra-only,supra,1,noise,0.2,77.24
+fmnist,supra-only,supra,1,noise,0.3,60.85
+fmnist,supra-only,supra,1,noise,0.5,32.25
+fmnist,supra-only,supra,1,occlusion,0.0,89.11
+fmnist,supra-only,supra,1,occlusion,0.1,79.5
+fmnist,supra-only,supra,1,occlusion,0.25,64.9
+fmnist,supra-only,supra,1,occlusion,0.4,43.5
+fmnist,supra-only,supra,2,noise,0.0,89.25
+fmnist,supra-only,supra,2,noise,0.05,88.45
+fmnist,supra-only,supra,2,noise,0.1,85.92
+fmnist,supra-only,supra,2,noise,0.2,74.88
+fmnist,supra-only,supra,2,noise,0.3,56.54
+fmnist,supra-only,supra,2,noise,0.5,31.52
+fmnist,supra-only,supra,2,occlusion,0.0,89.25
+fmnist,supra-only,supra,2,occlusion,0.1,79.99
+fmnist,supra-only,supra,2,occlusion,0.25,64.42
+fmnist,supra-only,supra,2,occlusion,0.4,42.57
+fmnist,supra-only,supra,3,noise,0.0,88.51
+fmnist,supra-only,supra,3,noise,0.05,87.38
+fmnist,supra-only,supra,3,noise,0.1,84.87
+fmnist,supra-only,supra,3,noise,0.2,72.31
+fmnist,supra-only,supra,3,noise,0.3,54.3
+fmnist,supra-only,supra,3,noise,0.5,29.96
+fmnist,supra-only,supra,3,occlusion,0.0,88.51
+fmnist,supra-only,supra,3,occlusion,0.1,78.62
+fmnist,supra-only,supra,3,occlusion,0.25,64.87
+fmnist,supra-only,supra,3,occlusion,0.4,42.64
+fmnist,V1 mixed,v1,1,noise,0.0,89.72
+fmnist,V1 mixed,v1,1,noise,0.05,88.68
+fmnist,V1 mixed,v1,1,noise,0.1,86.18
+fmnist,V1 mixed,v1,1,noise,0.2,71.06
+fmnist,V1 mixed,v1,1,noise,0.3,50.84
+fmnist,V1 mixed,v1,1,noise,0.5,25.7
+fmnist,V1 mixed,v1,1,occlusion,0.0,89.72
+fmnist,V1 mixed,v1,1,occlusion,0.1,79.5
+fmnist,V1 mixed,v1,1,occlusion,0.25,63.99
+fmnist,V1 mixed,v1,1,occlusion,0.4,42.22
+fmnist,V1 mixed,v1,2,noise,0.0,89.2
+fmnist,V1 mixed,v1,2,noise,0.05,87.93
+fmnist,V1 mixed,v1,2,noise,0.1,84.68
+fmnist,V1 mixed,v1,2,noise,0.2,68.77
+fmnist,V1 mixed,v1,2,noise,0.3,50.14
+fmnist,V1 mixed,v1,2,noise,0.5,25.96
+fmnist,V1 mixed,v1,2,occlusion,0.0,89.2
+fmnist,V1 mixed,v1,2,occlusion,0.1,78.9
+fmnist,V1 mixed,v1,2,occlusion,0.25,62.85
+fmnist,V1 mixed,v1,2,occlusion,0.4,41.6
+fmnist,V1 mixed,v1,3,noise,0.0,88.3
+fmnist,V1 mixed,v1,3,noise,0.05,86.28
+fmnist,V1 mixed,v1,3,noise,0.1,82.09
+fmnist,V1 mixed,v1,3,noise,0.2,65.55
+fmnist,V1 mixed,v1,3,noise,0.3,46.11
+fmnist,V1 mixed,v1,3,noise,0.5,24.89
+fmnist,V1 mixed,v1,3,occlusion,0.0,88.3
+fmnist,V1 mixed,v1,3,occlusion,0.1,77.68
+fmnist,V1 mixed,v1,3,occlusion,0.25,62.31
+fmnist,V1 mixed,v1,3,occlusion,0.4,39.87
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.0,89.51
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.05,88.48
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.1,84.08
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.2,66.55
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.3,48.96
+fmnist,V1 mixed [thr0],v1@thr0,1,noise,0.5,27.11
+fmnist,V1 mixed [thr0],v1@thr0,1,occlusion,0.0,89.51
+fmnist,V1 mixed [thr0],v1@thr0,1,occlusion,0.1,79.66
+fmnist,V1 mixed [thr0],v1@thr0,1,occlusion,0.25,64.44
+fmnist,V1 mixed [thr0],v1@thr0,1,occlusion,0.4,42.38
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.0,89.36
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.05,87.55
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.1,81.74
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.2,60.81
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.3,44.88
+fmnist,V1 mixed [thr0],v1@thr0,2,noise,0.5,25.01
+fmnist,V1 mixed [thr0],v1@thr0,2,occlusion,0.0,89.36
+fmnist,V1 mixed [thr0],v1@thr0,2,occlusion,0.1,79.08
+fmnist,V1 mixed [thr0],v1@thr0,2,occlusion,0.25,63.03
+fmnist,V1 mixed [thr0],v1@thr0,2,occlusion,0.4,42.43
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.0,88.85
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.05,86.47
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.1,81.01
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.2,61.47
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.3,44.14
+fmnist,V1 mixed [thr0],v1@thr0,3,noise,0.5,23.37
+fmnist,V1 mixed [thr0],v1@thr0,3,occlusion,0.0,88.85
+fmnist,V1 mixed [thr0],v1@thr0,3,occlusion,0.1,76.85
+fmnist,V1 mixed [thr0],v1@thr0,3,occlusion,0.25,61.01
+fmnist,V1 mixed [thr0],v1@thr0,3,occlusion,0.4,39.05

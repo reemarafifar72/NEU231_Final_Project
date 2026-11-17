@@ -1,0 +1,10 @@
+dataset,model,size,row,seeds,acc,acc_sd,diff,diff_sd,p,wins
+fmnist,dANN-LRF,16 dends x 256 somata,"additive soma, apical sees local patches (paper)",3,89.13,0.704,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,"additive soma, apical sees coarse context",3,89.08,0.724,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,"Ca gate, apical sees local patches",3,89.43,0.387,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,"Ca gate, apical sees coarse context",3,89.243,0.428,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,"context effect, additive soma",3,,,-0.05,0.035,0.1296,0/3
+fmnist,dANN-LRF,16 dends x 256 somata,"context effect, Ca gate",3,,,-0.187,0.199,0.245,1/3
+fmnist,dANN-LRF,16 dends x 256 somata,"gate effect, local apical input",3,,,0.3,0.361,0.2863,2/3
+fmnist,dANN-LRF,16 dends x 256 somata,"gate effect, coarse apical input",3,,,0.163,0.313,0.462,2/3
+fmnist,dANN-LRF,16 dends x 256 somata,interaction: does the gate gain more from context?,3,,,-0.137,0.222,0.3978,1/3
