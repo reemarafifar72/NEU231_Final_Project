@@ -1,0 +1,13 @@
+dataset,model,size,variant,train_images,epochs,seeds,acc,acc_sd,metric,diff,diff_sd,p,wins
+fmnist,dANN-LRF,16 dends x 256 somata,LeakyReLU (paper),1000,200,3,81.527,0.412,early-stop,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,LeakyReLU (paper),5000,100,3,85.403,0.365,early-stop,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,LeakyReLU (paper),20000,50,3,88.053,0.196,early-stop,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,LeakyReLU (paper),54000,25,3,89.13,0.704,final epoch,,,,
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only [sat0.2],1000,200,3,81.82,0.431,early-stop,0.293,0.25,0.179,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only [sat0.2],5000,100,3,85.72,0.19,early-stop,0.317,0.2,0.1115,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only [sat0.2],20000,50,3,88.57,0.121,early-stop,0.517,0.294,0.0929,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,sub-only [sat0.2],54000,25,3,89.613,0.813,final epoch,0.483,0.18,0.0433,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only [thr0],1000,200,3,81.84,0.34,early-stop,0.313,0.078,0.0199,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only [thr0],5000,100,3,85.617,0.303,early-stop,0.213,0.255,0.2849,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only [thr0],20000,50,3,88.563,0.102,early-stop,0.51,0.101,0.0129,3/3
+fmnist,dANN-LRF,16 dends x 256 somata,Ca-only [thr0],54000,25,3,89.697,0.804,final epoch,0.567,0.101,0.0105,3/3

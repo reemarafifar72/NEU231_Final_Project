@@ -11,3 +11,5 @@ venv/
 
 # macOS
 .DS_Store
+# robustness.py per-run cache (regenerated from the saved weights)
+*.cache
