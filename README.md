@@ -157,6 +157,34 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     steep-dendrite gain vanished at 32 x 256 (finding 5), and the combination has not been
     tested there or on Fashion-MNIST.
 
+14. **Width beats depth, and size beats the dendrite type** (Fashion-MNIST, LeakyReLU dendrites,
+    3 seeds; `figures/architecture/fmnist/`). Architectures are layers x dendrites x somata.
+
+    | Architecture | Params | Test accuracy | Paired difference from 1 x 16 x 256 |
+    |---|---|---|---|
+    | 1 x 16 x 2048 | 612k | 90.73 +/- 0.20 | +1.60 +/- 0.71 (3 of 3) |
+    | 1 x 64 x 512 | 595k | 90.53 +/- 0.12 | +1.40 +/- 0.59 (3 of 3) |
+    | 1 x 16 x 1024 | 306k | 90.52 +/- 0.26 | +1.39 +/- 0.48 (3 of 3) |
+    | 2 x 16 x 1024 | 602k | 90.38 +/- 0.15 | +1.25 +/- 0.59 (3 of 3) |
+    | 2 x 16 x 512 | 301k | 90.31 +/- 0.28 | +1.18 +/- 0.83 (3 of 3) |
+    | 1 x 32 x 512 | 301k | 90.29 +/- 0.19 | +1.16 +/- 0.66 (3 of 3) |
+    | 3 x 16 x 512 | 449k | 89.84 +/- 0.73 | +0.71 +/- 0.50 (3 of 3) |
+    | 1 x 16 x 256 (base) | 77k | 89.23 +/- 0.53 (5 seeds) | |
+
+    Accuracy rises with size up to about 300k parameters (+1.2 to +1.4 pp) and barely after
+    (doubling again adds 0 to 0.2 pp). At matched parameter count one layer is as good as or
+    better than two, and three layers are worse; more somata and more dendrites per soma are
+    interchangeable. The train-test gap grows from 3.4 to 5.5 pp with size. The top five
+    architectures are within 0.15 pp on validation accuracy, so there is no single best one;
+    1 x 16 x 1024 (the base with 4x the somata) was taken for the next test.
+
+    On 1 x 16 x 1024 the dendrite type no longer matters: paired differences from LeakyReLU
+    (90.52) are +0.08 +/- 0.28 for Ca-only threshold 0 (90.60), +0.09 +/- 0.19 for the matched
+    tanh (90.60, 2 of 3 seeds each) and -0.53 +/- 0.33 for tuned supra-only (89.98, 0 of 3).
+    At 1 x 16 x 256 the same Ca and tanh dendrites gain +0.57 and +0.48 (3 of 3). As on CIFAR-10
+    at 32 x 256 (finding 5), the steep-dendrite advantage is a small-model effect that a wider
+    network absorbs. CIFAR-10 has not been run for this sweep yet.
+
 Caveats: most comparisons use 3 seeds, the p-values are uncorrected for the number of models
 compared, and the biological variants were tuned while the baseline was tuned only for weight
 decay.
@@ -323,6 +351,22 @@ For gate runs `analyze_v1.py` now
 also reports a gate ablation: test accuracy with the gate shuffled across images (same values,
 wrong images), fixed at each soma's mean, and closed. Intact minus shuffled is the
 image-specific information the gate carries.
+
+## Architecture sweep: wider and deeper models
+
+`sweep_arch.sh` trains the paper's model (LeakyReLU, dANN-LRF, 16 synapses) at 14
+architectures, `LAYERSxDENDSxSOMA`, seeds 1-3, cheapest first and resumable. Extra layers
+read the previous layer's somata laid out on a 2D grid, as in the paper's code.
+`arch_results.py` writes `arch_summary.csv` (final and early-stopped test accuracy, train-test
+gap, paired difference from 1 x 16 x 256) and `16_architecture.png`.
+`sweep_arch_nonlin.sh` then trains Ca-only (threshold 0), the matched tanh (`sub`, saturation
+0.2) and tuned supra-only (p 1.5, leak 0.1) on one architecture: the best by validation
+accuracy (`arch_results.py --print-best`, never test) or the one given as `ARCH`.
+
+    bash sweep_arch.sh                                   # Fashion-MNIST, about 6 h on an M2
+    python arch_results.py --dataset fmnist              # figures/architecture/fmnist/
+    ARCH=1x16x1024 bash sweep_arch_nonlin.sh             # about 1.5 h
+    ARCHS="1x16x256 1x16x1024" DATASET=cifar10 bash sweep_arch.sh   # Colab, notebook 5g
 
 ## CIFAR-10 on Colab
 
