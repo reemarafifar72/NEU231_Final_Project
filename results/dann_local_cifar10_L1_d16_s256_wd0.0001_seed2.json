@@ -228,6 +228,8 @@
   "leak": 0.0,
   "basal_nonlin": "leaky",
   "apical_frac": 0.25,
+  "apical_input": "same",
+  "apical_pool": 4,
   "epochs": 50,
   "lr": 0.001,
   "batch_size": 128,

@@ -22,6 +22,9 @@ makes the model more noise-tolerant on both datasets. It works with the plain ad
 the multiplicative Ca gate does not benefit from it. The two one-point gains add: steep
 saturating dendrites with coarse apical input reach 59.4 to 59.7% on CIFAR-10, about two
 points above the paper's model with the same number of parameters (3 seeds, one model size).
+Simply widening the paper's model does more: four times the somata (1 x 16 x 1024) reaches
+60.60% on CIFAR-10 (+3.2 points) and 90.52% on Fashion-MNIST (+1.4), deeper models do not
+help, and at that width the biological dendrites no longer beat LeakyReLU.
 
 All numbers are test accuracy (%) for dANN-LRF, mean +/- SD over seeds, at 16 dendrites x 256
 somata unless stated. "Paired" differences compare runs with the same seed (same data split
@@ -183,7 +186,29 @@ and wiring). Tables: `figures/cifar10/` and `figures/control1/` (Fashion-MNIST),
     tanh (90.60, 2 of 3 seeds each) and -0.53 +/- 0.33 for tuned supra-only (89.98, 0 of 3).
     At 1 x 16 x 256 the same Ca and tanh dendrites gain +0.57 and +0.48 (3 of 3). As on CIFAR-10
     at 32 x 256 (finding 5), the steep-dendrite advantage is a small-model effect that a wider
-    network absorbs. CIFAR-10 has not been run for this sweep yet.
+    network absorbs.
+
+    **CIFAR-10** (3 seeds, 50 epochs, Colab notebook 5g; `figures/architecture/cifar10/`). Width
+    helps more than on Fashion-MNIST and has not levelled off at the sizes tried:
+
+    | Architecture | Params | Test accuracy | Paired difference from 1 x 16 x 256 | Train - test |
+    |---|---|---|---|---|
+    | 1 x 16 x 1024 | 830k | 60.60 +/- 1.06 | +3.18 +/- 1.27 (3 of 3) | 20.5 |
+    | 1 x 64 x 256 | 822k | 59.54 +/- 0.89 | +2.11 +/- 0.96 (3 of 3) | 19.7 |
+    | 1 x 16 x 512 | 415k | 58.90 +/- 0.24 | +1.47 +/- 0.94 (3 of 3) | 16.4 |
+    | 2 x 16 x 512 | 563k | 58.08 +/- 0.39 | +0.65 +/- 1.17 (2 of 3) | 35.0 |
+    | 1 x 16 x 256 (base) | 208k | 57.32 +/- 0.85 (5 seeds) | | 12.2 |
+
+    1 x 16 x 1024 with LeakyReLU dendrites is the best model in the project on CIFAR-10, ahead
+    of the stacked model of finding 13 (59.68) though with four times the parameters. More
+    somata beat more dendrites per soma at equal size (60.60 vs 59.54), and a second layer is
+    worse than one at fewer parameters: it overfits badly (35 pp train-test gap). On
+    1 x 16 x 1024 the biological dendrites lose at the final epoch: Ca-only threshold 0
+    -1.81 +/- 0.25 (0 of 3, p = 0.006), matched tanh -0.36 +/- 0.12 (0 of 3), tuned supra-only
+    -1.70 +/- 1.06 (0 of 3). They fit the training set harder (train accuracy 89.7 and 85.4
+    against 81.1) and overfit; at the best-validation epoch the differences are +0.05 +/- 1.36,
+    +0.86 +/- 1.19 and -0.95 +/- 0.48, i.e. no reliable gain. On both datasets, then, size is
+    worth more than any dendrite type, and the steep-dendrite gain is specific to small models.
 
 Caveats: most comparisons use 3 seeds, the p-values are uncorrected for the number of models
 compared, and the biological variants were tuned while the baseline was tuned only for weight
